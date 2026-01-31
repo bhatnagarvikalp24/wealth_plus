@@ -82,6 +82,14 @@ export const registerSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100, 'Name is too long'),
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
+  securityQuestion: z.string().min(1, 'Security question is required'),
+  securityAnswer: z.string().min(2, 'Security answer must be at least 2 characters'),
+})
+
+export const resetPasswordSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  securityAnswer: z.string().min(1, 'Security answer is required'),
+  newPassword: z.string().min(6, 'Password must be at least 6 characters'),
 })
 
 // Dashboard query schema
@@ -108,5 +116,6 @@ export type CreateExpenseVertical = z.infer<typeof createExpenseVerticalSchema>
 export type CreateSavingsInstrument = z.infer<typeof createSavingsInstrumentSchema>
 export type LoginInput = z.infer<typeof loginSchema>
 export type RegisterInput = z.infer<typeof registerSchema>
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>
 export type DashboardQuery = z.infer<typeof dashboardQuerySchema>
 export type ExportQuery = z.infer<typeof exportQuerySchema>

@@ -357,8 +357,11 @@ export default function DashboardPage() {
                   <XAxis
                     dataKey="month"
                     tickFormatter={formatMonthLabel}
-                    tick={{ fill: '#64748b', fontSize: 12 }}
+                    tick={{ fill: '#64748b', fontSize: 11 }}
                     axisLine={{ stroke: '#e2e8f0' }}
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
                   />
                   <YAxis
                     tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}k`}
@@ -437,7 +440,8 @@ export default function DashboardPage() {
                       <Legend
                         layout="horizontal"
                         verticalAlign="bottom"
-                        wrapperStyle={{ fontSize: '12px' }}
+                        wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }}
+                        iconSize={8}
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -464,7 +468,7 @@ export default function DashboardPage() {
                     <BarChart
                       data={breakdowns.incomeBySource}
                       layout="vertical"
-                      margin={{ left: 10, right: 20 }}
+                      margin={{ left: 10, right: 20, bottom: 5 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                       <XAxis
@@ -472,13 +476,14 @@ export default function DashboardPage() {
                         tickFormatter={(value) =>
                           `₹${(value / 1000).toFixed(0)}k`
                         }
-                        tick={{ fill: '#64748b', fontSize: 11 }}
+                        tick={{ fill: '#64748b', fontSize: 10 }}
                       />
                       <YAxis
                         dataKey="name"
                         type="category"
-                        width={70}
-                        tick={{ fill: '#64748b', fontSize: 11 }}
+                        width={90}
+                        tick={{ fill: '#64748b', fontSize: 10 }}
+                        interval={0}
                       />
                       <Tooltip
                         formatter={(value: number) => formatCurrency(value)}
@@ -515,12 +520,16 @@ export default function DashboardPage() {
                         ...item,
                         name: savingsCategoryLabel(item.category),
                       }))}
-                      margin={{ left: 10, right: 20 }}
+                      margin={{ left: 10, right: 20, bottom: 30 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                       <XAxis
                         dataKey="name"
-                        tick={{ fill: '#64748b', fontSize: 11 }}
+                        tick={{ fill: '#64748b', fontSize: 10 }}
+                        angle={-15}
+                        textAnchor="end"
+                        height={60}
+                        interval={0}
                       />
                       <YAxis
                         tickFormatter={(value) =>

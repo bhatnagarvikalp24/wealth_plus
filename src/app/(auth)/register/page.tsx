@@ -7,20 +7,30 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, TrendingUp, Check } from 'lucide-react'
 import { registerSchema, type RegisterInput } from '@/lib/validations'
+import { SECURITY_QUESTIONS } from '@/lib/constants'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/use-toast'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 export default function RegisterPage() {
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
+  const [securityQuestion, setSecurityQuestion] = useState('')
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
   })
@@ -182,6 +192,54 @@ export default function RegisterPage() {
                 {errors.password && (
                   <p className="text-sm text-red-500">{errors.password.message}</p>
                 )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="securityQuestion" className="text-gray-700 font-medium">
+                  Security Question
+                </Label>
+                <Select
+                  value={securityQuestion}
+                  onValueChange={(value) => {
+                    setSecurityQuestion(value)
+                    setValue('securityQuestion', value)
+                  }}
+                  disabled={isLoading}
+                >
+                  <SelectTrigger className="h-11 sm:h-12 bg-gray-50 border-gray-200 focus:bg-white">
+                    <SelectValue placeholder="Select a security question" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SECURITY_QUESTIONS.map((question) => (
+                      <SelectItem key={question} value={question}>
+                        {question}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.securityQuestion && (
+                  <p className="text-sm text-red-500">{errors.securityQuestion.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="securityAnswer" className="text-gray-700 font-medium">
+                  Security Answer
+                </Label>
+                <Input
+                  id="securityAnswer"
+                  type="text"
+                  placeholder="Your answer"
+                  className="h-11 sm:h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                  {...register('securityAnswer')}
+                  disabled={isLoading}
+                />
+                {errors.securityAnswer && (
+                  <p className="text-sm text-red-500">{errors.securityAnswer.message}</p>
+                )}
+                <p className="text-xs text-amber-600">
+                  Please remember your answer. It will be required for password recovery.
+                </p>
               </div>
 
               <Button
