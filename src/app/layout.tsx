@@ -6,8 +6,12 @@ import { Providers } from '@/components/providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Financial Diary - Personal Finance Tracker',
+  title: 'WealthPulse - Smart Finance Tracker',
   description: 'Track your income, expenses, and savings with ease',
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({
