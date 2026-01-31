@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  incomeEntries   IncomeEntry[]
+  expenseEntries  ExpenseEntry[]
+  savingsEntries  SavingsEntry[]
+  incomeSources   IncomeSource[]
+  expenseVerticals ExpenseVertical[]
+}
+
+// Master table for Income Sources
+model IncomeSource {
+  id        String   @id @default(cuid())
+  name      String
+  userId    String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  incomeEntries IncomeEntry[]
+
+  @@unique([name, userId])
+}
+
+// Master table for Expense Verticals
+model ExpenseVertical {
+  id        String   @id @default(cuid())
+  name      String
+  userId    String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expenseEntries ExpenseEntry[]
+
+  @@unique([name, userId])
+}
+
+// Savings Category enum (fixed 4 buckets)
+enum SavingsCategory {
+  FD_RD       // FD/RD
+  NPS_PPF     // NPS/PPF
+  STOCKS_ETFS // Stocks/ETFs
+  MF          // Mutual Funds
+}
+
+// Master table for Savings Instruments
+model SavingsInstrument {
+  id        String          @id @default(cuid())
+  name      String
+  category  SavingsCategory
+  isDefault Boolean         @default(false)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  // Relations
+  savingsEntries SavingsEntry[]
+
+  @@unique([name, category])
+}
+
+// Income Entry
+model IncomeEntry {
+  id        String   @id @default(cuid())
+  month     String   // Format: YYYY-MM
+  amount    Float
+  notes     String?
+  userId    String
+  sourceId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  source IncomeSource @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  @@index([month])
+  @@index([userId])
+}
+
+// Expense Entry
+model ExpenseEntry {
+  id         String   @id @default(cuid())
+  month      String   // Format: YYYY-MM
+  amount     Float
+  notes      String?
+  userId     String
+  verticalId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vertical ExpenseVertical @relation(fields: [verticalId], references: [id], onDelete: Restrict)
+
+  @@index([month])
+  @@index([userId])
+}
+
+// Savings Entry
+model SavingsEntry {
+  id           String   @id @default(cuid())
+  month        String   // Format: YYYY-MM
+  amount       Float
+  notes        String?
+  userId       String
+  instrumentId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  instrument SavingsInstrument @relation(fields: [instrumentId], references: [id], onDelete: Restrict)
+
+  @@index([month])
+  @@index([userId])
+}
