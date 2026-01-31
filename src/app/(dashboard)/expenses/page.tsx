@@ -141,44 +141,44 @@ export default function ExpensesPage() {
   return (
     <div className="flex flex-col h-full">
       <Header title="Expenses" description="Track your spending across categories" />
-      <div className="flex-1 p-6 space-y-6 overflow-y-auto bg-gray-50">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto bg-gray-50">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
           <MonthSelector month={month} onChange={setMonth} />
-          <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={exportData} className="bg-white">
-              <Download className="h-4 w-4 mr-2" />Export CSV
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Button variant="outline" onClick={exportData} className="bg-white flex-1 sm:flex-none text-xs sm:text-sm">
+              <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />Export
             </Button>
-            <Button onClick={openAddDialog} className="bg-red-600 hover:bg-red-700">
-              <Plus className="h-4 w-4 mr-2" />Add Expense
+            <Button onClick={openAddDialog} className="bg-red-600 hover:bg-red-700 flex-1 sm:flex-none text-xs sm:text-sm">
+              <Plus className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />Add Expense
             </Button>
           </div>
         </div>
 
         <Card className="bg-gradient-to-r from-red-500 to-rose-600 border-0 shadow-lg">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-red-100 text-sm font-medium">Total Expenses</p>
-                <p className="text-3xl font-bold text-white mt-1">{formatCurrency(totalExpenses)}</p>
-                <p className="text-red-200 text-sm mt-1">{entries.length} {entries.length === 1 ? 'entry' : 'entries'} this month</p>
+                <p className="text-red-100 text-xs sm:text-sm font-medium">Total Expenses</p>
+                <p className="text-2xl sm:text-3xl font-bold text-white mt-1">{formatCurrency(totalExpenses)}</p>
+                <p className="text-red-200 text-xs sm:text-sm mt-1">{entries.length} {entries.length === 1 ? 'entry' : 'entries'} this month</p>
               </div>
-              <div className="p-4 bg-white/20 rounded-2xl">
-                <TrendingDown className="h-8 w-8 text-white" />
+              <div className="p-3 sm:p-4 bg-white/20 rounded-2xl">
+                <TrendingDown className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-0">
-            <Table>
+          <CardContent className="p-0 overflow-x-auto">
+            <Table className="min-w-[700px]">
               <TableHeader>
                 <TableRow className="bg-gray-50 hover:bg-gray-50">
-                  <TableHead className="font-semibold text-gray-700">Category</TableHead>
-                  <TableHead className="text-right font-semibold text-gray-700">Amount</TableHead>
-                  <TableHead className="font-semibold text-gray-700">Notes</TableHead>
-                  <TableHead className="font-semibold text-gray-700">Date Added</TableHead>
-                  <TableHead className="text-right font-semibold text-gray-700">Actions</TableHead>
+                  <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Category</TableHead>
+                  <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Amount</TableHead>
+                  <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Notes</TableHead>
+                  <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Date Added</TableHead>
+                  <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

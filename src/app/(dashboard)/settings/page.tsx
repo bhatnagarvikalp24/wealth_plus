@@ -306,40 +306,40 @@ export default function SettingsPage() {
     <div className="flex flex-col h-full">
       <Header title="Settings" description="Manage your categories and master data" />
 
-      <div className="flex-1 p-6 overflow-y-auto bg-gray-50">
-        <Tabs defaultValue="income" className="space-y-6">
-          <TabsList className="bg-white border shadow-sm p-1 rounded-xl">
-            <TabsTrigger value="income" className="rounded-lg data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700 px-4">
-              <Wallet className="h-4 w-4 mr-2" />Income Sources
+      <div className="flex-1 p-4 sm:p-6 overflow-y-auto bg-gray-50">
+        <Tabs defaultValue="income" className="space-y-4 sm:space-y-6">
+          <TabsList className="bg-white border shadow-sm p-1 rounded-xl w-full grid grid-cols-3 gap-1">
+            <TabsTrigger value="income" className="rounded-lg data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700 px-2 sm:px-4 text-xs sm:text-sm">
+              <Wallet className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /><span className="hidden sm:inline">Income</span>
             </TabsTrigger>
-            <TabsTrigger value="expense" className="rounded-lg data-[state=active]:bg-red-50 data-[state=active]:text-red-700 px-4">
-              <CreditCard className="h-4 w-4 mr-2" />Expense Categories
+            <TabsTrigger value="expense" className="rounded-lg data-[state=active]:bg-red-50 data-[state=active]:text-red-700 px-2 sm:px-4 text-xs sm:text-sm">
+              <CreditCard className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /><span className="hidden sm:inline">Expenses</span>
             </TabsTrigger>
-            <TabsTrigger value="savings" className="rounded-lg data-[state=active]:bg-amber-50 data-[state=active]:text-amber-700 px-4">
-              <PiggyBank className="h-4 w-4 mr-2" />Savings Instruments
+            <TabsTrigger value="savings" className="rounded-lg data-[state=active]:bg-amber-50 data-[state=active]:text-amber-700 px-2 sm:px-4 text-xs sm:text-sm">
+              <PiggyBank className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /><span className="hidden sm:inline">Savings</span>
             </TabsTrigger>
           </TabsList>
 
           {/* Income Sources Tab */}
           <TabsContent value="income">
             <Card className="border-0 shadow-sm">
-              <CardHeader className="flex flex-row items-center justify-between border-b bg-gradient-to-r from-emerald-50 to-emerald-100/50 rounded-t-lg">
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border-b bg-gradient-to-r from-emerald-50 to-emerald-100/50 rounded-t-lg p-4 sm:p-6">
                 <div>
-                  <CardTitle className="text-lg text-emerald-900">Income Sources</CardTitle>
-                  <CardDescription className="text-emerald-700">Manage categories for your income entries</CardDescription>
+                  <CardTitle className="text-base sm:text-lg text-emerald-900">Income Sources</CardTitle>
+                  <CardDescription className="text-sm text-emerald-700">Manage categories for your income entries</CardDescription>
                 </div>
-                <Button onClick={openAddIncomeDialog} className="bg-emerald-600 hover:bg-emerald-700">
+                <Button onClick={openAddIncomeDialog} className="bg-emerald-600 hover:bg-emerald-700 w-full sm:w-auto">
                   <Plus className="h-4 w-4 mr-2" />Add Source
                 </Button>
               </CardHeader>
-              <CardContent className="p-0">
-                <Table>
+              <CardContent className="p-0 overflow-x-auto">
+                <Table className="min-w-[600px]">
                   <TableHeader>
                     <TableRow className="bg-gray-50 hover:bg-gray-50">
-                      <TableHead className="font-semibold text-gray-700">Name</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Entries</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Type</TableHead>
-                      <TableHead className="text-right font-semibold text-gray-700">Actions</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Name</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Entries</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Type</TableHead>
+                      <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -400,23 +400,23 @@ export default function SettingsPage() {
           {/* Expense Verticals Tab */}
           <TabsContent value="expense">
             <Card className="border-0 shadow-sm">
-              <CardHeader className="flex flex-row items-center justify-between border-b bg-gradient-to-r from-red-50 to-red-100/50 rounded-t-lg">
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border-b bg-gradient-to-r from-red-50 to-red-100/50 rounded-t-lg p-4 sm:p-6">
                 <div>
-                  <CardTitle className="text-lg text-red-900">Expense Categories</CardTitle>
-                  <CardDescription className="text-red-700">Manage categories for your expense entries</CardDescription>
+                  <CardTitle className="text-base sm:text-lg text-red-900">Expense Categories</CardTitle>
+                  <CardDescription className="text-sm text-red-700">Manage categories for your expense entries</CardDescription>
                 </div>
-                <Button onClick={openAddExpenseDialog} className="bg-red-600 hover:bg-red-700">
+                <Button onClick={openAddExpenseDialog} className="bg-red-600 hover:bg-red-700 w-full sm:w-auto">
                   <Plus className="h-4 w-4 mr-2" />Add Category
                 </Button>
               </CardHeader>
-              <CardContent className="p-0">
-                <Table>
+              <CardContent className="p-0 overflow-x-auto">
+                <Table className="min-w-[600px]">
                   <TableHeader>
                     <TableRow className="bg-gray-50 hover:bg-gray-50">
-                      <TableHead className="font-semibold text-gray-700">Name</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Entries</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Type</TableHead>
-                      <TableHead className="text-right font-semibold text-gray-700">Actions</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Name</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Entries</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Type</TableHead>
+                      <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -477,24 +477,24 @@ export default function SettingsPage() {
           {/* Savings Instruments Tab */}
           <TabsContent value="savings">
             <Card className="border-0 shadow-sm">
-              <CardHeader className="flex flex-row items-center justify-between border-b bg-gradient-to-r from-amber-50 to-amber-100/50 rounded-t-lg">
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border-b bg-gradient-to-r from-amber-50 to-amber-100/50 rounded-t-lg p-4 sm:p-6">
                 <div>
-                  <CardTitle className="text-lg text-amber-900">Savings Instruments</CardTitle>
-                  <CardDescription className="text-amber-700">Manage instruments for your savings and investments</CardDescription>
+                  <CardTitle className="text-base sm:text-lg text-amber-900">Savings Instruments</CardTitle>
+                  <CardDescription className="text-sm text-amber-700">Manage instruments for your savings and investments</CardDescription>
                 </div>
-                <Button onClick={openAddSavingsDialog} className="bg-amber-500 hover:bg-amber-600">
+                <Button onClick={openAddSavingsDialog} className="bg-amber-500 hover:bg-amber-600 w-full sm:w-auto">
                   <Plus className="h-4 w-4 mr-2" />Add Instrument
                 </Button>
               </CardHeader>
-              <CardContent className="p-0">
-                <Table>
+              <CardContent className="p-0 overflow-x-auto">
+                <Table className="min-w-[700px]">
                   <TableHeader>
                     <TableRow className="bg-gray-50 hover:bg-gray-50">
-                      <TableHead className="font-semibold text-gray-700">Category</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Name</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Entries</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Type</TableHead>
-                      <TableHead className="text-right font-semibold text-gray-700">Actions</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Category</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Name</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Entries</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Type</TableHead>
+                      <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
