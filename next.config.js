@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable standalone output for Docker deployment
-  output: 'standalone',
+  // Note: Remove 'output: standalone' for Netlify deployment
+  // Use 'output: standalone' only for Docker deployment
 
   experimental: {
     serverActions: {
