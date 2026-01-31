@@ -6,7 +6,7 @@ import { Providers } from '@/components/providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'WealthPulse - Smart Finance Tracker',
+  title: 'The Finlog - Smart Finance Tracker',
   description: 'Track your income, expenses, and savings with ease',
   icons: {
     icon: '/favicon.svg',

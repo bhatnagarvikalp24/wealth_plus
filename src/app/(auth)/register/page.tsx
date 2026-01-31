@@ -95,8 +95,8 @@ export default function RegisterPage() {
               <TrendingUp className="h-8 w-8 text-white" />
             </div>
             <div>
-              <span className="text-2xl font-bold text-white">Wealth</span>
-              <span className="text-2xl font-bold text-emerald-200">Pulse</span>
+              <span className="text-2xl font-bold text-white">The</span>
+              <span className="text-2xl font-bold text-emerald-200">Finlog</span>
             </div>
           </div>
           <p className="text-emerald-100 text-lg max-w-md">
@@ -119,7 +119,7 @@ export default function RegisterPage() {
         </div>
 
         <div className="relative z-10 text-emerald-200 text-sm">
-          &copy; {new Date().getFullYear()} WealthPulse. All rights reserved.
+          &copy; {new Date().getFullYear()} TheFinlog. All rights reserved.
         </div>
       </div>
 
@@ -132,8 +132,8 @@ export default function RegisterPage() {
               <TrendingUp className="h-7 w-7 text-white" />
             </div>
             <div>
-              <span className="text-2xl font-bold text-gray-900">Wealth</span>
-              <span className="text-2xl font-bold text-emerald-600">Pulse</span>
+              <span className="text-2xl font-bold text-gray-900">The</span>
+              <span className="text-2xl font-bold text-emerald-600">Finlog</span>
             </div>
           </div>
 

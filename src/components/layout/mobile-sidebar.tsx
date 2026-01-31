@@ -88,8 +88,8 @@ export function MobileSidebar() {
                 <TrendingUp className="h-5 w-5 text-white" />
               </div>
               <div>
-                <span className="text-lg font-bold text-gray-900">Wealth</span>
-                <span className="text-lg font-bold text-blue-600">Pulse</span>
+                <span className="text-lg font-bold text-gray-900">The</span>
+                <span className="text-lg font-bold text-blue-600">Finlog</span>
               </div>
             </Link>
           </div>

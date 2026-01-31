@@ -121,8 +121,8 @@ export default function ForgotPasswordPage() {
             <TrendingUp className="h-7 w-7 text-white" />
           </div>
           <div>
-            <span className="text-2xl font-bold text-gray-900">Wealth</span>
-            <span className="text-2xl font-bold text-emerald-600">Pulse</span>
+            <span className="text-2xl font-bold text-gray-900">The</span>
+            <span className="text-2xl font-bold text-emerald-600">Finlog</span>
           </div>
         </div>
 

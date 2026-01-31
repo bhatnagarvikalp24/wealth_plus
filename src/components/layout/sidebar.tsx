@@ -71,8 +71,8 @@ export function Sidebar() {
             <TrendingUp className="h-6 w-6 text-white" />
           </div>
           <div>
-            <span className="text-xl font-bold text-gray-900">Wealth</span>
-            <span className="text-xl font-bold text-blue-600">Pulse</span>
+            <span className="text-xl font-bold text-gray-900">The </span>
+            <span className="text-xl font-bold text-blue-600">Finlog</span>
           </div>
         </Link>
       </div>
