@@ -8,9 +8,22 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'The Finlog - Smart Finance Tracker',
   description: 'Track your income, expenses, and savings with ease',
+  manifest: '/manifest.json',
   icons: {
     icon: '/favicon.svg',
-    apple: '/favicon.svg',
+    apple: '/icon-192.png',
+  },
+  themeColor: '#3b82f6',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'The Finlog',
   },
 }
 
