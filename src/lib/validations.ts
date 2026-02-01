@@ -135,13 +135,7 @@ export const loginSchema = z.object({
 export const registerSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100, 'Name is too long'),
   email: emailWithDomainValidation,
-  password: z
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
-    ),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
   securityQuestion: z.string().min(1, 'Security question is required'),
   securityAnswer: z.string().min(2, 'Security answer must be at least 2 characters'),
 })

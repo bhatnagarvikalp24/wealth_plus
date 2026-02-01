@@ -18,37 +18,26 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
-  // Login security fields
-  failedLoginAttempts Int       @default(0)
-  lockedUntil         DateTime?
-  lastLoginAt         DateTime?
-  lastLoginIp         String?
-
   // Relations
-  incomeEntries    IncomeEntry[]
-  expenseEntries   ExpenseEntry[]
-  savingsEntries   SavingsEntry[]
-  incomeSources    IncomeSource[]
+  incomeEntries   IncomeEntry[]
+  expenseEntries  ExpenseEntry[]
+  savingsEntries  SavingsEntry[]
+  incomeSources   IncomeSource[]
   expenseVerticals ExpenseVertical[]
-  loginAttempts    LoginAttempt[]
 }
 
-// Track login attempts for security
-model LoginAttempt {
+// Email verification OTP
+model EmailVerification {
   id        String   @id @default(cuid())
   email     String
-  userId    String?
-  ipAddress String?
-  userAgent String?
-  success   Boolean
-  reason    String?  // 'invalid_email', 'invalid_password', 'account_locked', etc.
+  otp       String
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+  attempts  Int      @default(0)
   createdAt DateTime @default(now())
 
-  // Relations
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   @@index([email])
-  @@index([createdAt])
+  @@index([expiresAt])
 }
 
 // Master table for Income Sources
