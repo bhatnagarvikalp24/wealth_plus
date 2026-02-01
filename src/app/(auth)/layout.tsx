@@ -9,27 +9,33 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [showSplash, setShowSplash] = useState(true)
-  const [hasSeenSplash, setHasSeenSplash] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const [showSplash, setShowSplash] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     // Check if user has already seen splash in this session
     const seen = sessionStorage.getItem('splashSeen')
-    if (seen) {
-      setShowSplash(false)
-      setHasSeenSplash(true)
+    if (!seen) {
+      setShowSplash(true)
     }
   }, [])
 
   const handleSplashComplete = () => {
     sessionStorage.setItem('splashSeen', 'true')
     setShowSplash(false)
-    setHasSeenSplash(true)
+  }
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-muted/30 dark:bg-background" />
+    )
   }
 
   return (
     <>
-      {showSplash && !hasSeenSplash && (
+      {showSplash && (
         <SplashScreen onComplete={handleSplashComplete} minDuration={2000} />
       )}
       <ThemeToggle variant="floating" />
