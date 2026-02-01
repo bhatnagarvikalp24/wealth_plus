@@ -72,6 +72,60 @@ export const createSavingsInstrumentSchema = z.object({
   category: savingsCategoryEnum,
 })
 
+// Allowed email domains for registration
+const ALLOWED_EMAIL_DOMAINS = [
+  // Popular free email providers
+  'gmail.com',
+  'googlemail.com',
+  'yahoo.com',
+  'yahoo.in',
+  'yahoo.co.in',
+  'outlook.com',
+  'hotmail.com',
+  'live.com',
+  'msn.com',
+  'icloud.com',
+  'me.com',
+  'mac.com',
+  'aol.com',
+  'protonmail.com',
+  'proton.me',
+  'zoho.com',
+  'yandex.com',
+  'mail.com',
+  'gmx.com',
+  'gmx.net',
+  // Indian providers
+  'rediffmail.com',
+  'sify.com',
+]
+
+// Email validation with domain check
+const emailWithDomainValidation = z
+  .string()
+  .email('Invalid email address')
+  .refine(
+    (email) => {
+      const domain = email.split('@')[1]?.toLowerCase()
+      if (!domain) return false
+
+      // Check if it's a known provider
+      if (ALLOWED_EMAIL_DOMAINS.includes(domain)) return true
+
+      // Allow corporate/custom domains (must have at least one dot after @)
+      // and must be at least 4 chars (e.g., a.co)
+      const domainParts = domain.split('.')
+      if (domainParts.length >= 2 && domainParts.every(part => part.length >= 1)) {
+        // Check TLD is valid (at least 2 chars)
+        const tld = domainParts[domainParts.length - 1]
+        return tld.length >= 2
+      }
+
+      return false
+    },
+    { message: 'Please use a valid email address from a recognized provider' }
+  )
+
 // Auth schemas
 export const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -80,8 +134,14 @@ export const loginSchema = z.object({
 
 export const registerSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100, 'Name is too long'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: emailWithDomainValidation,
+  password: z
+    .string()
+    .min(6, 'Password must be at least 6 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+    ),
   securityQuestion: z.string().min(1, 'Security question is required'),
   securityAnswer: z.string().min(2, 'Security answer must be at least 2 characters'),
 })
