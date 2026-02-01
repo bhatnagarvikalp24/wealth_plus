@@ -41,6 +41,11 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
+  // Skip non-GET requests and different origins
+  if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((response) => {
       // Cache hit - return response
@@ -48,9 +53,12 @@ self.addEventListener('fetch', (event) => {
         return response;
       }
 
-      return fetch(event.request).then((response) => {
-        // Check if we received a valid response
-        if (!response || response.status !== 200 || response.type !== 'basic') {
+      // Clone the request with redirect mode follow
+      const fetchRequest = event.request.clone();
+
+      return fetch(fetchRequest, { redirect: 'follow' }).then((response) => {
+        // Don't cache if not a valid response or if it's a redirect
+        if (!response || response.status !== 200 || response.type === 'opaque' || response.redirected) {
           return response;
         }
 
@@ -62,6 +70,9 @@ self.addEventListener('fetch', (event) => {
         });
 
         return response;
+      }).catch((error) => {
+        console.error('Fetch failed:', error);
+        throw error;
       });
     })
   );
