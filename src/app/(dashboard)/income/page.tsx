@@ -43,6 +43,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Card, CardContent } from '@/components/ui/card'
+import { SwipeableCard } from '@/components/ui/swipeable-card'
 import { useToast } from '@/components/ui/use-toast'
 import { createIncomeEntrySchema, type CreateIncomeEntry } from '@/lib/validations'
 import { formatCurrency, getCurrentMonth } from '@/lib/utils'
@@ -96,6 +97,13 @@ export default function IncomePage() {
   useEffect(() => {
     fetchSources()
   }, [])
+
+  // Listen for keyboard shortcut to open add dialog
+  useEffect(() => {
+    const handleNewEntry = () => openAddDialog()
+    window.addEventListener('keyboard-new-entry', handleNewEntry)
+    return () => window.removeEventListener('keyboard-new-entry', handleNewEntry)
+  }, [sources])
 
   useEffect(() => {
     fetchEntries()
@@ -301,8 +309,15 @@ export default function IncomePage() {
             </Card>
           ) : (
             entries.map((entry) => (
-              <Card key={entry.id} className="bg-card border-0 shadow-sm">
-                <CardContent className="p-4">
+              <SwipeableCard
+                key={entry.id}
+                onEdit={() => openEditDialog(entry)}
+                onDelete={() => setDeleteEntry(entry)}
+                editColor="bg-blue-500"
+                deleteColor="bg-red-500"
+                className="shadow-sm"
+              >
+                <div className="p-4 border-0">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center">
@@ -322,28 +337,11 @@ export default function IncomePage() {
                   {entry.notes && (
                     <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{entry.notes}</p>
                   )}
-                  <div className="flex justify-end gap-1 mt-3 pt-3 border-t border-border">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 text-muted-foreground hover:text-primary"
-                      onClick={() => openEditDialog(entry)}
-                    >
-                      <Pencil className="h-4 w-4 mr-1" />
-                      Edit
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
-                      onClick={() => setDeleteEntry(entry)}
-                    >
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Delete
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                  <p className="text-xs text-muted-foreground/60 mt-3 text-center">
+                    Swipe right to edit, left to delete
+                  </p>
+                </div>
+              </SwipeableCard>
             ))
           )}
         </div>
