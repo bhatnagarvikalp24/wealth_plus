@@ -34,27 +34,27 @@ export function MonthSelector({ month, onChange }: MonthSelectorProps) {
   }
 
   return (
-    <div className="flex items-center gap-1 bg-white rounded-xl border border-gray-200 p-1">
+    <div className="flex items-center gap-1 bg-card rounded-xl border border-border p-1">
       <Button
         variant="ghost"
         size="icon"
-        className="h-9 w-9 rounded-lg hover:bg-gray-100"
+        className="h-9 w-9 rounded-lg hover:bg-muted"
         onClick={goToPreviousMonth}
       >
         <ChevronLeft className="h-4 w-4" />
       </Button>
       <Button
         variant="ghost"
-        className="min-w-[160px] h-9 rounded-lg hover:bg-gray-100 font-medium"
+        className="min-w-[140px] sm:min-w-[160px] h-9 rounded-lg hover:bg-muted font-medium text-sm"
         onClick={goToCurrentMonth}
       >
-        <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+        <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
         {formatMonth(month)}
       </Button>
       <Button
         variant="ghost"
         size="icon"
-        className="h-9 w-9 rounded-lg hover:bg-gray-100"
+        className="h-9 w-9 rounded-lg hover:bg-muted"
         onClick={goToNextMonth}
       >
         <ChevronRight className="h-4 w-4" />

@@ -80,8 +80,8 @@ const COLORS = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-4 rounded-xl shadow-lg border border-gray-100">
-        <p className="font-medium text-gray-900 mb-2">{label}</p>
+      <div className="bg-card p-4 rounded-xl shadow-lg border border-border">
+        <p className="font-medium text-foreground mb-2">{label}</p>
         {payload.map((entry: any, index: number) => (
           <p key={index} className="text-sm" style={{ color: entry.color }}>
             {entry.name}: {formatCurrency(entry.value)}
@@ -137,10 +137,10 @@ export default function DashboardPage() {
     return (
       <div className="flex flex-col h-full">
         <Header title="Dashboard" description="Your financial overview" />
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center bg-background">
           <div className="flex flex-col items-center gap-4">
-            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-            <p className="text-gray-500">Loading your financial data...</p>
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            <p className="text-muted-foreground">Loading your financial data...</p>
           </div>
         </div>
       </div>
@@ -157,19 +157,19 @@ export default function DashboardPage() {
     return (
       <div className="flex flex-col h-full">
         <Header title="Dashboard" description="Your financial overview" />
-        <div className="flex-1 flex items-center justify-center p-8">
+        <div className="flex-1 flex items-center justify-center p-8 bg-background">
           <div className="text-center max-w-md">
-            <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <PiggyBank className="h-10 w-10 text-blue-600" />
+            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <PiggyBank className="h-10 w-10 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold text-foreground mb-2">
               No data yet
             </h2>
-            <p className="text-gray-500 mb-6">
+            <p className="text-muted-foreground mb-6">
               Start by adding your income, expenses, or savings to see your
               financial overview here.
             </p>
-            <div className="flex gap-3 justify-center">
+            <div className="flex gap-3 justify-center flex-wrap">
               <Button
                 onClick={() => (window.location.href = '/income')}
                 className="bg-emerald-600 hover:bg-emerald-700"
@@ -197,15 +197,15 @@ export default function DashboardPage() {
     <div className="flex flex-col h-full">
       <Header title="Dashboard" description="Your financial overview" />
 
-      <div className="flex-1 p-6 space-y-6 overflow-y-auto bg-gray-50">
+      <div className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto bg-muted/30">
         {/* Controls */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-white rounded-lg border border-gray-200">
-              <Calendar className="h-5 w-5 text-gray-500" />
+            <div className="p-2 bg-card rounded-lg border border-border">
+              <Calendar className="h-5 w-5 text-muted-foreground" />
             </div>
             <Select value={range} onValueChange={setRange}>
-              <SelectTrigger className="w-[180px] bg-white border-gray-200">
+              <SelectTrigger className="w-[160px] sm:w-[180px] bg-card border-border">
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
               <SelectContent>
@@ -219,124 +219,124 @@ export default function DashboardPage() {
           <Button
             variant="outline"
             onClick={exportSummary}
-            className="bg-white"
+            className="bg-card text-sm"
           >
             <Download className="h-4 w-4 mr-2" />
-            Export Summary
+            Export
           </Button>
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-          <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2 bg-emerald-100 rounded-lg">
-                  <Wallet className="h-5 w-5 text-emerald-600" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          <Card className="bg-card border-0 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-3 sm:p-5">
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <div className="p-1.5 sm:p-2 bg-emerald-500/10 dark:bg-emerald-500/20 rounded-lg">
+                  <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 dark:text-emerald-400" />
                 </div>
-                <ArrowUpRight className="h-4 w-4 text-emerald-500" />
+                <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-500" />
               </div>
-              <p className="text-sm text-gray-500 mb-1">Total Income</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Income</p>
+              <p className="text-lg sm:text-2xl font-bold text-foreground">
                 {formatCurrency(summary.totalIncome)}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2 bg-red-100 rounded-lg">
-                  <CreditCard className="h-5 w-5 text-red-600" />
+          <Card className="bg-card border-0 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-3 sm:p-5">
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <div className="p-1.5 sm:p-2 bg-red-500/10 dark:bg-red-500/20 rounded-lg">
+                  <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-red-600 dark:text-red-400" />
                 </div>
-                <ArrowDownRight className="h-4 w-4 text-red-500" />
+                <ArrowDownRight className="h-3 w-3 sm:h-4 sm:w-4 text-red-500" />
               </div>
-              <p className="text-sm text-gray-500 mb-1">Total Expenses</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Expenses</p>
+              <p className="text-lg sm:text-2xl font-bold text-foreground">
                 {formatCurrency(summary.totalExpenses)}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <PiggyBank className="h-5 w-5 text-blue-600" />
+          <Card className="bg-card border-0 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-3 sm:p-5">
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <div className="p-1.5 sm:p-2 bg-blue-500/10 dark:bg-blue-500/20 rounded-lg">
+                  <PiggyBank className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400" />
                 </div>
-                <ArrowUpRight className="h-4 w-4 text-blue-500" />
+                <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
               </div>
-              <p className="text-sm text-gray-500 mb-1">Total Savings</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Savings</p>
+              <p className="text-lg sm:text-2xl font-bold text-foreground">
                 {formatCurrency(summary.totalSavings)}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between mb-3">
+          <Card className="bg-card border-0 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-3 sm:p-5">
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
                 <div
-                  className={`p-2 rounded-lg ${summary.netCashFlow >= 0 ? 'bg-emerald-100' : 'bg-red-100'}`}
+                  className={`p-1.5 sm:p-2 rounded-lg ${summary.netCashFlow >= 0 ? 'bg-emerald-500/10 dark:bg-emerald-500/20' : 'bg-red-500/10 dark:bg-red-500/20'}`}
                 >
                   {summary.netCashFlow >= 0 ? (
                     <TrendingUp
-                      className={`h-5 w-5 ${summary.netCashFlow >= 0 ? 'text-emerald-600' : 'text-red-600'}`}
+                      className={`h-4 w-4 sm:h-5 sm:w-5 ${summary.netCashFlow >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}
                     />
                   ) : (
-                    <TrendingDown className="h-5 w-5 text-red-600" />
+                    <TrendingDown className="h-4 w-4 sm:h-5 sm:w-5 text-red-600 dark:text-red-400" />
                   )}
                 </div>
               </div>
-              <p className="text-sm text-gray-500 mb-1">Net Cash Flow</p>
+              <p className="text-xs sm:text-sm text-muted-foreground mb-1">Net Cash Flow</p>
               <p
-                className={`text-2xl font-bold ${summary.netCashFlow >= 0 ? 'text-emerald-600' : 'text-red-600'}`}
+                className={`text-lg sm:text-2xl font-bold ${summary.netCashFlow >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}
               >
                 {formatCurrency(summary.netCashFlow)}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2 bg-violet-100 rounded-lg">
-                  <PiggyBank className="h-5 w-5 text-violet-600" />
+          <Card className="bg-card border-0 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-3 sm:p-5">
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <div className="p-1.5 sm:p-2 bg-violet-500/10 dark:bg-violet-500/20 rounded-lg">
+                  <PiggyBank className="h-4 w-4 sm:h-5 sm:w-5 text-violet-600 dark:text-violet-400" />
                 </div>
               </div>
-              <p className="text-sm text-gray-500 mb-1">Savings Rate</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-1">Savings Rate</p>
+              <p className="text-lg sm:text-2xl font-bold text-foreground">
                 {summary.savingsRate}%
               </p>
-              <p className="text-xs text-gray-400">of income</p>
+              <p className="text-xs text-muted-foreground/70">of income</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div className="p-2 bg-amber-100 rounded-lg">
-                  <CreditCard className="h-5 w-5 text-amber-600" />
+          <Card className="bg-card border-0 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-3 sm:p-5">
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <div className="p-1.5 sm:p-2 bg-amber-500/10 dark:bg-amber-500/20 rounded-lg">
+                  <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-400" />
                 </div>
               </div>
-              <p className="text-sm text-gray-500 mb-1">Expense Ratio</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-1">Expense Ratio</p>
+              <p className="text-lg sm:text-2xl font-bold text-foreground">
                 {summary.expenseRatio}%
               </p>
-              <p className="text-xs text-gray-400">of income</p>
+              <p className="text-xs text-muted-foreground/70">of income</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Trend Chart */}
-        <Card className="bg-white border-0 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-gray-900">
+        <Card className="bg-card border-0 shadow-sm">
+          <CardHeader className="pb-2 px-4 sm:px-6">
+            <CardTitle className="text-base sm:text-lg font-semibold text-foreground">
               Monthly Trends
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-[350px]">
+          <CardContent className="px-2 sm:px-6">
+            <div className="h-[280px] sm:h-[350px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={monthlyData}>
                   <defs>
@@ -353,24 +353,29 @@ export default function DashboardPage() {
                       <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
                   <XAxis
                     dataKey="month"
                     tickFormatter={formatMonthLabel}
-                    tick={{ fill: '#64748b', fontSize: 11 }}
-                    axisLine={{ stroke: '#e2e8f0' }}
+                    tick={{ fontSize: 10 }}
+                    tickLine={false}
+                    axisLine={false}
                     angle={-45}
                     textAnchor="end"
-                    height={60}
+                    height={50}
+                    className="fill-muted-foreground"
                   />
                   <YAxis
                     tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}k`}
-                    tick={{ fill: '#64748b', fontSize: 12 }}
-                    axisLine={{ stroke: '#e2e8f0' }}
+                    tick={{ fontSize: 10 }}
+                    tickLine={false}
+                    axisLine={false}
+                    width={45}
+                    className="fill-muted-foreground"
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
-                    wrapperStyle={{ paddingTop: '20px' }}
+                    wrapperStyle={{ paddingTop: '10px', fontSize: '12px' }}
                     iconType="circle"
                   />
                   <Area
@@ -404,16 +409,16 @@ export default function DashboardPage() {
         </Card>
 
         {/* Breakdown Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Expenses by Category */}
-          <Card className="bg-white border-0 shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-semibold text-gray-900">
+          <Card className="bg-card border-0 shadow-sm">
+            <CardHeader className="pb-2 px-4 sm:px-6">
+              <CardTitle className="text-base sm:text-lg font-semibold text-foreground">
                 Expenses by Category
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="h-[280px]">
+            <CardContent className="px-2 sm:px-6">
+              <div className="h-[250px] sm:h-[280px]">
                 {breakdowns.expensesByVertical.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -422,9 +427,9 @@ export default function DashboardPage() {
                         dataKey="amount"
                         nameKey="name"
                         cx="50%"
-                        cy="50%"
-                        innerRadius={50}
-                        outerRadius={90}
+                        cy="45%"
+                        innerRadius={40}
+                        outerRadius={70}
                         paddingAngle={2}
                       >
                         {breakdowns.expensesByVertical.map((_, index) => (
@@ -436,17 +441,18 @@ export default function DashboardPage() {
                       </Pie>
                       <Tooltip
                         formatter={(value: number) => formatCurrency(value)}
+                        contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }}
                       />
                       <Legend
                         layout="horizontal"
                         verticalAlign="bottom"
-                        wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }}
+                        wrapperStyle={{ fontSize: '10px', paddingTop: '5px' }}
                         iconSize={8}
                       />
                     </PieChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="flex items-center justify-center h-full text-gray-400">
+                  <div className="flex items-center justify-center h-full text-muted-foreground">
                     No expense data
                   </div>
                 )}
@@ -455,38 +461,45 @@ export default function DashboardPage() {
           </Card>
 
           {/* Income by Source */}
-          <Card className="bg-white border-0 shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-semibold text-gray-900">
+          <Card className="bg-card border-0 shadow-sm">
+            <CardHeader className="pb-2 px-4 sm:px-6">
+              <CardTitle className="text-base sm:text-lg font-semibold text-foreground">
                 Income by Source
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="h-[280px]">
+            <CardContent className="px-2 sm:px-6">
+              <div className="h-[250px] sm:h-[280px]">
                 {breakdowns.incomeBySource.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                       data={breakdowns.incomeBySource}
                       layout="vertical"
-                      margin={{ left: 10, right: 20, bottom: 5 }}
+                      margin={{ left: 0, right: 10, bottom: 5 }}
                     >
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                      <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
                       <XAxis
                         type="number"
                         tickFormatter={(value) =>
                           `₹${(value / 1000).toFixed(0)}k`
                         }
-                        tick={{ fill: '#64748b', fontSize: 10 }}
+                        tick={{ fontSize: 9 }}
+                        tickLine={false}
+                        axisLine={false}
+                        className="fill-muted-foreground"
                       />
                       <YAxis
                         dataKey="name"
                         type="category"
-                        width={90}
-                        tick={{ fill: '#64748b', fontSize: 10 }}
+                        width={70}
+                        tick={{ fontSize: 9 }}
+                        tickLine={false}
+                        axisLine={false}
                         interval={0}
+                        className="fill-muted-foreground"
                       />
                       <Tooltip
                         formatter={(value: number) => formatCurrency(value)}
+                        contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }}
                       />
                       <Bar
                         dataKey="amount"
@@ -496,7 +509,7 @@ export default function DashboardPage() {
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="flex items-center justify-center h-full text-gray-400">
+                  <div className="flex items-center justify-center h-full text-muted-foreground">
                     No income data
                   </div>
                 )}
@@ -505,14 +518,14 @@ export default function DashboardPage() {
           </Card>
 
           {/* Savings by Category */}
-          <Card className="bg-white border-0 shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-semibold text-gray-900">
+          <Card className="bg-card border-0 shadow-sm">
+            <CardHeader className="pb-2 px-4 sm:px-6">
+              <CardTitle className="text-base sm:text-lg font-semibold text-foreground">
                 Savings by Category
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="h-[280px]">
+            <CardContent className="px-2 sm:px-6">
+              <div className="h-[250px] sm:h-[280px]">
                 {breakdowns.savingsByCategory.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
@@ -520,31 +533,39 @@ export default function DashboardPage() {
                         ...item,
                         name: savingsCategoryLabel(item.category),
                       }))}
-                      margin={{ left: 10, right: 20, bottom: 30 }}
+                      margin={{ left: 0, right: 10, bottom: 20 }}
                     >
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                      <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
                       <XAxis
                         dataKey="name"
-                        tick={{ fill: '#64748b', fontSize: 10 }}
+                        tick={{ fontSize: 9 }}
+                        tickLine={false}
+                        axisLine={false}
                         angle={-15}
                         textAnchor="end"
-                        height={60}
+                        height={50}
                         interval={0}
+                        className="fill-muted-foreground"
                       />
                       <YAxis
                         tickFormatter={(value) =>
                           `₹${(value / 1000).toFixed(0)}k`
                         }
-                        tick={{ fill: '#64748b', fontSize: 11 }}
+                        tick={{ fontSize: 9 }}
+                        tickLine={false}
+                        axisLine={false}
+                        width={40}
+                        className="fill-muted-foreground"
                       />
                       <Tooltip
                         formatter={(value: number) => formatCurrency(value)}
+                        contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }}
                       />
                       <Bar dataKey="amount" fill="#3b82f6" radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="flex items-center justify-center h-full text-gray-400">
+                  <div className="flex items-center justify-center h-full text-muted-foreground">
                     No savings data
                   </div>
                 )}

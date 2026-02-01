@@ -45,10 +45,10 @@ interface SavingsEntry {
 }
 
 const categoryColors: Record<string, { bg: string; text: string; icon: string }> = {
-  FD_RD: { bg: 'bg-blue-100', text: 'text-blue-700', icon: 'bg-blue-600' },
-  NPS_PPF: { bg: 'bg-purple-100', text: 'text-purple-700', icon: 'bg-purple-600' },
-  STOCKS_ETFS: { bg: 'bg-emerald-100', text: 'text-emerald-700', icon: 'bg-emerald-600' },
-  MF: { bg: 'bg-orange-100', text: 'text-orange-700', icon: 'bg-orange-600' },
+  FD_RD: { bg: 'bg-blue-500/10 dark:bg-blue-500/20', text: 'text-blue-700 dark:text-blue-300', icon: 'bg-blue-600' },
+  NPS_PPF: { bg: 'bg-purple-500/10 dark:bg-purple-500/20', text: 'text-purple-700 dark:text-purple-300', icon: 'bg-purple-600' },
+  STOCKS_ETFS: { bg: 'bg-emerald-500/10 dark:bg-emerald-500/20', text: 'text-emerald-700 dark:text-emerald-300', icon: 'bg-emerald-600' },
+  MF: { bg: 'bg-orange-500/10 dark:bg-orange-500/20', text: 'text-orange-700 dark:text-orange-300', icon: 'bg-orange-600' },
 }
 
 export default function SavingsPage() {
@@ -159,11 +159,11 @@ export default function SavingsPage() {
   return (
     <div className="flex flex-col h-full">
       <Header title="Savings & Investments" description="Track your savings and investments across instruments" />
-      <div className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto bg-gray-50">
+      <div className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto bg-muted/30">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
           <MonthSelector month={month} onChange={setMonth} />
           <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Button variant="outline" onClick={exportData} className="bg-white flex-1 sm:flex-none text-xs sm:text-sm">
+            <Button variant="outline" onClick={exportData} className="bg-card flex-1 sm:flex-none text-xs sm:text-sm">
               <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />Export
             </Button>
             <Button onClick={openAddDialog} className="bg-amber-500 hover:bg-amber-600 flex-1 sm:flex-none text-xs sm:text-sm">
@@ -187,17 +187,102 @@ export default function SavingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-0 shadow-sm">
+        {/* Mobile Card View */}
+        <div className="sm:hidden space-y-3">
+          {loading ? (
+            <Card className="bg-card border-0 shadow-sm">
+              <CardContent className="p-6 text-center">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-8 h-8 border-3 border-amber-500 border-t-transparent rounded-full animate-spin" />
+                  <span className="text-muted-foreground">Loading...</span>
+                </div>
+              </CardContent>
+            </Card>
+          ) : entries.length === 0 ? (
+            <Card className="bg-card border-0 shadow-sm">
+              <CardContent className="p-6 text-center">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center">
+                    <PiggyBank className="h-8 w-8 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground">No savings entries yet</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Tap &quot;Add Savings&quot; to record your first investment
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            entries.map((entry) => {
+              const style = getCategoryStyle(entry.instrument.category)
+              return (
+                <Card key={entry.id} className="bg-card border-0 shadow-sm">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 ${style.icon} rounded-lg flex items-center justify-center`}>
+                          <PiggyBank className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground">{entry.instrument.name}</p>
+                          <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${style.bg} ${style.text}`}>
+                            {savingsCategoryLabel(entry.instrument.category)}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="font-semibold text-amber-600 dark:text-amber-400">
+                        {formatCurrency(entry.amount)}
+                      </p>
+                    </div>
+                    {entry.notes && (
+                      <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{entry.notes}</p>
+                    )}
+                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(entry.createdAt).toLocaleDateString()}
+                      </p>
+                      <div className="flex gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 text-muted-foreground hover:text-primary"
+                          onClick={() => openEditDialog(entry)}
+                        >
+                          <Pencil className="h-4 w-4 mr-1" />
+                          Edit
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
+                          onClick={() => setDeleteEntry(entry)}
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })
+          )}
+        </div>
+
+        {/* Desktop Table */}
+        <Card className="bg-card border-0 shadow-sm hidden sm:block">
           <CardContent className="p-0 overflow-x-auto">
-            <Table className="min-w-[800px]">
+            <Table>
               <TableHeader>
-                <TableRow className="bg-gray-50 hover:bg-gray-50">
-                  <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Category</TableHead>
-                  <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Instrument</TableHead>
-                  <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Amount</TableHead>
-                  <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Notes</TableHead>
-                  <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Date Added</TableHead>
-                  <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Actions</TableHead>
+                <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="font-semibold text-foreground">Category</TableHead>
+                  <TableHead className="font-semibold text-foreground">Instrument</TableHead>
+                  <TableHead className="text-right font-semibold text-foreground">Amount</TableHead>
+                  <TableHead className="font-semibold text-foreground">Notes</TableHead>
+                  <TableHead className="font-semibold text-foreground">Date Added</TableHead>
+                  <TableHead className="text-right font-semibold text-foreground">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -206,7 +291,7 @@ export default function SavingsPage() {
                     <TableCell colSpan={6} className="text-center py-12">
                       <div className="flex flex-col items-center gap-3">
                         <div className="w-8 h-8 border-3 border-amber-500 border-t-transparent rounded-full animate-spin" />
-                        <span className="text-gray-500">Loading...</span>
+                        <span className="text-muted-foreground">Loading...</span>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -214,12 +299,12 @@ export default function SavingsPage() {
                   <TableRow>
                     <TableCell colSpan={6} className="text-center py-12">
                       <div className="flex flex-col items-center gap-3">
-                        <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
-                          <PiggyBank className="h-8 w-8 text-amber-600" />
+                        <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center">
+                          <PiggyBank className="h-8 w-8 text-amber-600 dark:text-amber-400" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">No savings entries yet</p>
-                          <p className="text-sm text-gray-500 mt-1">Click &quot;Add Savings&quot; to record your first investment</p>
+                          <p className="font-medium text-foreground">No savings entries yet</p>
+                          <p className="text-sm text-muted-foreground mt-1">Click &quot;Add Savings&quot; to record your first investment</p>
                         </div>
                       </div>
                     </TableCell>
@@ -227,7 +312,7 @@ export default function SavingsPage() {
                 ) : entries.map((entry) => {
                   const style = getCategoryStyle(entry.instrument.category)
                   return (
-                    <TableRow key={entry.id} className="hover:bg-gray-50">
+                    <TableRow key={entry.id} className="hover:bg-muted/50">
                       <TableCell>
                         <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${style.bg} ${style.text}`}>
                           {savingsCategoryLabel(entry.instrument.category)}
@@ -238,22 +323,22 @@ export default function SavingsPage() {
                           <div className={`w-8 h-8 ${style.icon} rounded-lg flex items-center justify-center`}>
                             <PiggyBank className="h-4 w-4 text-white" />
                           </div>
-                          <span className="font-medium text-gray-900">{entry.instrument.name}</span>
+                          <span className="font-medium text-foreground">{entry.instrument.name}</span>
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
-                        <span className="font-semibold text-amber-600">{formatCurrency(entry.amount)}</span>
+                        <span className="font-semibold text-amber-600 dark:text-amber-400">{formatCurrency(entry.amount)}</span>
                       </TableCell>
                       <TableCell className="max-w-[200px]">
-                        <span className="text-gray-600 truncate block">{entry.notes || '-'}</span>
+                        <span className="text-muted-foreground truncate block">{entry.notes || '-'}</span>
                       </TableCell>
-                      <TableCell className="text-gray-500">{new Date(entry.createdAt).toLocaleDateString()}</TableCell>
+                      <TableCell className="text-muted-foreground">{new Date(entry.createdAt).toLocaleDateString()}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditDialog(entry)}>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/10" onClick={() => openEditDialog(entry)}>
                             <Pencil className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteEntry(entry)}>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 hover:bg-red-500/10" onClick={() => setDeleteEntry(entry)}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -275,13 +360,13 @@ export default function SavingsPage() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-5 py-4">
               <div className="space-y-2">
-                <Label className="text-gray-700">Instrument</Label>
+                <Label className="text-foreground">Instrument</Label>
                 <Select value={selectedInstrumentId} onValueChange={(v) => setValue('instrumentId', v)}>
                   <SelectTrigger className="h-11"><SelectValue placeholder="Select instrument" /></SelectTrigger>
                   <SelectContent>
                     {Object.entries(groupedInstruments).map(([category, categoryInstruments]) => (
                       <SelectGroup key={category}>
-                        <SelectLabel className="text-xs uppercase tracking-wider text-gray-500">{savingsCategoryLabel(category)}</SelectLabel>
+                        <SelectLabel className="text-xs uppercase tracking-wider text-muted-foreground">{savingsCategoryLabel(category)}</SelectLabel>
                         {categoryInstruments.map((instrument) => (
                           <SelectItem key={instrument.id} value={instrument.id}>{instrument.name}</SelectItem>
                         ))}
@@ -292,12 +377,12 @@ export default function SavingsPage() {
                 {errors.instrumentId && <p className="text-sm text-red-500">{errors.instrumentId.message}</p>}
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-700">Amount Invested</Label>
+                <Label className="text-foreground">Amount Invested</Label>
                 <Input type="number" step="0.01" min="0" className="h-11" placeholder="Enter amount" {...register('amount', { valueAsNumber: true })} />
                 {errors.amount && <p className="text-sm text-red-500">{errors.amount.message}</p>}
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-700">Notes (optional)</Label>
+                <Label className="text-foreground">Notes (optional)</Label>
                 <Textarea placeholder="Add any notes..." className="resize-none" rows={3} {...register('notes')} />
               </div>
             </div>

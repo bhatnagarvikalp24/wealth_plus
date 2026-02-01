@@ -54,10 +54,10 @@ const SAVINGS_CATEGORIES = [
 ]
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
-  FD_RD: { bg: 'bg-blue-100', text: 'text-blue-700' },
-  NPS_PPF: { bg: 'bg-purple-100', text: 'text-purple-700' },
-  STOCKS_ETFS: { bg: 'bg-emerald-100', text: 'text-emerald-700' },
-  MF: { bg: 'bg-orange-100', text: 'text-orange-700' },
+  FD_RD: { bg: 'bg-blue-500/10 dark:bg-blue-500/20', text: 'text-blue-700 dark:text-blue-300' },
+  NPS_PPF: { bg: 'bg-purple-500/10 dark:bg-purple-500/20', text: 'text-purple-700 dark:text-purple-300' },
+  STOCKS_ETFS: { bg: 'bg-emerald-500/10 dark:bg-emerald-500/20', text: 'text-emerald-700 dark:text-emerald-300' },
+  MF: { bg: 'bg-orange-500/10 dark:bg-orange-500/20', text: 'text-orange-700 dark:text-orange-300' },
 }
 
 export default function SettingsPage() {
@@ -306,9 +306,9 @@ export default function SettingsPage() {
     <div className="flex flex-col h-full">
       <Header title="Settings" description="Manage your categories and master data" />
 
-      <div className="flex-1 p-4 sm:p-6 overflow-y-auto bg-gray-50">
+      <div className="flex-1 p-4 sm:p-6 overflow-y-auto bg-muted/50">
         <Tabs defaultValue="income" className="space-y-4 sm:space-y-6">
-          <TabsList className="bg-white border shadow-sm p-1 rounded-xl w-full grid grid-cols-3 gap-1">
+          <TabsList className="bg-card border shadow-sm p-1 rounded-xl w-full grid grid-cols-3 gap-1">
             <TabsTrigger value="income" className="rounded-lg data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700 px-2 sm:px-4 text-xs sm:text-sm">
               <Wallet className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /><span className="hidden sm:inline">Income</span>
             </TabsTrigger>
@@ -335,11 +335,11 @@ export default function SettingsPage() {
               <CardContent className="p-0 overflow-x-auto">
                 <Table className="min-w-[600px]">
                   <TableHeader>
-                    <TableRow className="bg-gray-50 hover:bg-gray-50">
-                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Name</TableHead>
-                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Entries</TableHead>
-                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Type</TableHead>
-                      <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Actions</TableHead>
+                    <TableRow className="bg-muted/50 hover:bg-muted/50">
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Name</TableHead>
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Entries</TableHead>
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Type</TableHead>
+                      <TableHead className="text-right font-semibold text-foreground text-xs sm:text-sm">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -351,40 +351,40 @@ export default function SettingsPage() {
                               <Wallet className="h-8 w-8 text-emerald-600" />
                             </div>
                             <div>
-                              <p className="font-medium text-gray-900">No income sources</p>
-                              <p className="text-sm text-gray-500 mt-1">Add your first income source to get started</p>
+                              <p className="font-medium text-foreground">No income sources</p>
+                              <p className="text-sm text-muted-foreground mt-1">Add your first income source to get started</p>
                             </div>
                           </div>
                         </TableCell>
                       </TableRow>
                     ) : incomeSources.map((source) => (
-                      <TableRow key={source.id} className="hover:bg-gray-50">
+                      <TableRow key={source.id} className="hover:bg-muted/50">
                         <TableCell>
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
                               <Wallet className="h-4 w-4 text-emerald-600" />
                             </div>
-                            <span className="font-medium text-gray-900">{source.name}</span>
+                            <span className="font-medium text-foreground">{source.name}</span>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                          <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-foreground">
                             {source._count.incomeEntries} entries
                           </span>
                         </TableCell>
                         <TableCell>
                           {source.isDefault ? (
-                            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-500">Default</span>
+                            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-muted-foreground">Default</span>
                           ) : (
                             <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700">Custom</span>
                           )}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-1">
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditIncomeDialog(source)}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditIncomeDialog(source)}>
                               <Pencil className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteIncomeSource(source)} disabled={source._count.incomeEntries > 0}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteIncomeSource(source)} disabled={source._count.incomeEntries > 0}>
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -412,11 +412,11 @@ export default function SettingsPage() {
               <CardContent className="p-0 overflow-x-auto">
                 <Table className="min-w-[600px]">
                   <TableHeader>
-                    <TableRow className="bg-gray-50 hover:bg-gray-50">
-                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Name</TableHead>
-                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Entries</TableHead>
-                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Type</TableHead>
-                      <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Actions</TableHead>
+                    <TableRow className="bg-muted/50 hover:bg-muted/50">
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Name</TableHead>
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Entries</TableHead>
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Type</TableHead>
+                      <TableHead className="text-right font-semibold text-foreground text-xs sm:text-sm">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -428,40 +428,40 @@ export default function SettingsPage() {
                               <CreditCard className="h-8 w-8 text-red-600" />
                             </div>
                             <div>
-                              <p className="font-medium text-gray-900">No expense categories</p>
-                              <p className="text-sm text-gray-500 mt-1">Add your first expense category to get started</p>
+                              <p className="font-medium text-foreground">No expense categories</p>
+                              <p className="text-sm text-muted-foreground mt-1">Add your first expense category to get started</p>
                             </div>
                           </div>
                         </TableCell>
                       </TableRow>
                     ) : expenseVerticals.map((vertical) => (
-                      <TableRow key={vertical.id} className="hover:bg-gray-50">
+                      <TableRow key={vertical.id} className="hover:bg-muted/50">
                         <TableCell>
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
                               <CreditCard className="h-4 w-4 text-red-600" />
                             </div>
-                            <span className="font-medium text-gray-900">{vertical.name}</span>
+                            <span className="font-medium text-foreground">{vertical.name}</span>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                          <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-foreground">
                             {vertical._count.expenseEntries} entries
                           </span>
                         </TableCell>
                         <TableCell>
                           {vertical.isDefault ? (
-                            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-500">Default</span>
+                            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-muted-foreground">Default</span>
                           ) : (
                             <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-1 text-xs font-medium text-red-700">Custom</span>
                           )}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-1">
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditExpenseDialog(vertical)}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditExpenseDialog(vertical)}>
                               <Pencil className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteExpenseVertical(vertical)} disabled={vertical._count.expenseEntries > 0}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteExpenseVertical(vertical)} disabled={vertical._count.expenseEntries > 0}>
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -489,12 +489,12 @@ export default function SettingsPage() {
               <CardContent className="p-0 overflow-x-auto">
                 <Table className="min-w-[700px]">
                   <TableHeader>
-                    <TableRow className="bg-gray-50 hover:bg-gray-50">
-                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Category</TableHead>
-                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Name</TableHead>
-                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Entries</TableHead>
-                      <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Type</TableHead>
-                      <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Actions</TableHead>
+                    <TableRow className="bg-muted/50 hover:bg-muted/50">
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Category</TableHead>
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Name</TableHead>
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Entries</TableHead>
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Type</TableHead>
+                      <TableHead className="text-right font-semibold text-foreground text-xs sm:text-sm">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -506,8 +506,8 @@ export default function SettingsPage() {
                               <PiggyBank className="h-8 w-8 text-amber-600" />
                             </div>
                             <div>
-                              <p className="font-medium text-gray-900">No savings instruments</p>
-                              <p className="text-sm text-gray-500 mt-1">Add your first savings instrument to get started</p>
+                              <p className="font-medium text-foreground">No savings instruments</p>
+                              <p className="text-sm text-muted-foreground mt-1">Add your first savings instrument to get started</p>
                             </div>
                           </div>
                         </TableCell>
@@ -515,7 +515,7 @@ export default function SettingsPage() {
                     ) : savingsInstruments.map((instrument) => {
                       const style = getCategoryStyle(instrument.category)
                       return (
-                        <TableRow key={instrument.id} className="hover:bg-gray-50">
+                        <TableRow key={instrument.id} className="hover:bg-muted/50">
                           <TableCell>
                             <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${style.bg} ${style.text}`}>
                               {savingsCategoryLabel(instrument.category)}
@@ -526,27 +526,27 @@ export default function SettingsPage() {
                               <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
                                 <PiggyBank className="h-4 w-4 text-amber-600" />
                               </div>
-                              <span className="font-medium text-gray-900">{instrument.name}</span>
+                              <span className="font-medium text-foreground">{instrument.name}</span>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-foreground">
                               {instrument._count.savingsEntries} entries
                             </span>
                           </TableCell>
                           <TableCell>
                             {instrument.isDefault ? (
-                              <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-500">Default</span>
+                              <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-muted-foreground">Default</span>
                             ) : (
                               <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700">Custom</span>
                             )}
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-1">
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditSavingsDialog(instrument)}>
+                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditSavingsDialog(instrument)}>
                                 <Pencil className="h-4 w-4" />
                               </Button>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteSavingsInstrument(instrument)} disabled={instrument._count.savingsEntries > 0}>
+                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteSavingsInstrument(instrument)} disabled={instrument._count.savingsEntries > 0}>
                                 <Trash2 className="h-4 w-4" />
                               </Button>
                             </div>
@@ -570,7 +570,7 @@ export default function SettingsPage() {
           </DialogHeader>
           <div className="space-y-5 py-4">
             <div className="space-y-2">
-              <Label className="text-gray-700">Name</Label>
+              <Label className="text-foreground">Name</Label>
               <Input value={incomeSourceName} onChange={(e) => setIncomeSourceName(e.target.value)} placeholder="e.g., Salary, Freelance" className="h-11" />
             </div>
           </div>
@@ -591,7 +591,7 @@ export default function SettingsPage() {
           </DialogHeader>
           <div className="space-y-5 py-4">
             <div className="space-y-2">
-              <Label className="text-gray-700">Name</Label>
+              <Label className="text-foreground">Name</Label>
               <Input value={expenseVerticalName} onChange={(e) => setExpenseVerticalName(e.target.value)} placeholder="e.g., Groceries, Travel" className="h-11" />
             </div>
           </div>
@@ -612,7 +612,7 @@ export default function SettingsPage() {
           </DialogHeader>
           <div className="space-y-5 py-4">
             <div className="space-y-2">
-              <Label className="text-gray-700">Category</Label>
+              <Label className="text-foreground">Category</Label>
               <Select value={savingsInstrumentCategory} onValueChange={setSavingsInstrumentCategory}>
                 <SelectTrigger className="h-11"><SelectValue placeholder="Select category" /></SelectTrigger>
                 <SelectContent>
@@ -623,7 +623,7 @@ export default function SettingsPage() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label className="text-gray-700">Name</Label>
+              <Label className="text-foreground">Name</Label>
               <Input value={savingsInstrumentName} onChange={(e) => setSavingsInstrumentName(e.target.value)} placeholder="e.g., FD, Stocks, PPF" className="h-11" />
             </div>
           </div>

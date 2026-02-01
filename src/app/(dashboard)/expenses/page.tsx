@@ -141,11 +141,11 @@ export default function ExpensesPage() {
   return (
     <div className="flex flex-col h-full">
       <Header title="Expenses" description="Track your spending across categories" />
-      <div className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto bg-gray-50">
+      <div className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto bg-muted/30">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
           <MonthSelector month={month} onChange={setMonth} />
           <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Button variant="outline" onClick={exportData} className="bg-white flex-1 sm:flex-none text-xs sm:text-sm">
+            <Button variant="outline" onClick={exportData} className="bg-card flex-1 sm:flex-none text-xs sm:text-sm">
               <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />Export
             </Button>
             <Button onClick={openAddDialog} className="bg-red-600 hover:bg-red-700 flex-1 sm:flex-none text-xs sm:text-sm">
@@ -169,16 +169,93 @@ export default function ExpensesPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-0 shadow-sm">
+        {/* Mobile Card View */}
+        <div className="sm:hidden space-y-3">
+          {loading ? (
+            <Card className="bg-card border-0 shadow-sm">
+              <CardContent className="p-6 text-center">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-8 h-8 border-3 border-red-600 border-t-transparent rounded-full animate-spin" />
+                  <span className="text-muted-foreground">Loading...</span>
+                </div>
+              </CardContent>
+            </Card>
+          ) : entries.length === 0 ? (
+            <Card className="bg-card border-0 shadow-sm">
+              <CardContent className="p-6 text-center">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center">
+                    <CreditCard className="h-8 w-8 text-red-600 dark:text-red-400" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground">No expense entries yet</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Tap &quot;Add Expense&quot; to record your first entry
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            entries.map((entry) => (
+              <Card key={entry.id} className="bg-card border-0 shadow-sm">
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center">
+                        <CreditCard className="h-5 w-5 text-red-600 dark:text-red-400" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">{entry.vertical.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(entry.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="font-semibold text-red-600 dark:text-red-400">
+                      {formatCurrency(entry.amount)}
+                    </p>
+                  </div>
+                  {entry.notes && (
+                    <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{entry.notes}</p>
+                  )}
+                  <div className="flex justify-end gap-1 mt-3 pt-3 border-t border-border">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 text-muted-foreground hover:text-primary"
+                      onClick={() => openEditDialog(entry)}
+                    >
+                      <Pencil className="h-4 w-4 mr-1" />
+                      Edit
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
+                      onClick={() => setDeleteEntry(entry)}
+                    >
+                      <Trash2 className="h-4 w-4 mr-1" />
+                      Delete
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Table */}
+        <Card className="bg-card border-0 shadow-sm hidden sm:block">
           <CardContent className="p-0 overflow-x-auto">
-            <Table className="min-w-[700px]">
+            <Table>
               <TableHeader>
-                <TableRow className="bg-gray-50 hover:bg-gray-50">
-                  <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Category</TableHead>
-                  <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Amount</TableHead>
-                  <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Notes</TableHead>
-                  <TableHead className="font-semibold text-gray-700 text-xs sm:text-sm">Date Added</TableHead>
-                  <TableHead className="text-right font-semibold text-gray-700 text-xs sm:text-sm">Actions</TableHead>
+                <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="font-semibold text-foreground">Category</TableHead>
+                  <TableHead className="text-right font-semibold text-foreground">Amount</TableHead>
+                  <TableHead className="font-semibold text-foreground">Notes</TableHead>
+                  <TableHead className="font-semibold text-foreground">Date Added</TableHead>
+                  <TableHead className="text-right font-semibold text-foreground">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -187,7 +264,7 @@ export default function ExpensesPage() {
                     <TableCell colSpan={5} className="text-center py-12">
                       <div className="flex flex-col items-center gap-3">
                         <div className="w-8 h-8 border-3 border-red-600 border-t-transparent rounded-full animate-spin" />
-                        <span className="text-gray-500">Loading...</span>
+                        <span className="text-muted-foreground">Loading...</span>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -195,39 +272,39 @@ export default function ExpensesPage() {
                   <TableRow>
                     <TableCell colSpan={5} className="text-center py-12">
                       <div className="flex flex-col items-center gap-3">
-                        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-                          <CreditCard className="h-8 w-8 text-red-600" />
+                        <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center">
+                          <CreditCard className="h-8 w-8 text-red-600 dark:text-red-400" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">No expense entries yet</p>
-                          <p className="text-sm text-gray-500 mt-1">Click &quot;Add Expense&quot; to record your first entry</p>
+                          <p className="font-medium text-foreground">No expense entries yet</p>
+                          <p className="text-sm text-muted-foreground mt-1">Click &quot;Add Expense&quot; to record your first entry</p>
                         </div>
                       </div>
                     </TableCell>
                   </TableRow>
                 ) : entries.map((entry) => (
-                  <TableRow key={entry.id} className="hover:bg-gray-50">
+                  <TableRow key={entry.id} className="hover:bg-muted/50">
                     <TableCell>
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                          <CreditCard className="h-4 w-4 text-red-600" />
+                        <div className="w-8 h-8 bg-red-500/10 rounded-lg flex items-center justify-center">
+                          <CreditCard className="h-4 w-4 text-red-600 dark:text-red-400" />
                         </div>
-                        <span className="font-medium text-gray-900">{entry.vertical.name}</span>
+                        <span className="font-medium text-foreground">{entry.vertical.name}</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className="font-semibold text-red-600">{formatCurrency(entry.amount)}</span>
+                      <span className="font-semibold text-red-600 dark:text-red-400">{formatCurrency(entry.amount)}</span>
                     </TableCell>
                     <TableCell className="max-w-[200px]">
-                      <span className="text-gray-600 truncate block">{entry.notes || '-'}</span>
+                      <span className="text-muted-foreground truncate block">{entry.notes || '-'}</span>
                     </TableCell>
-                    <TableCell className="text-gray-500">{new Date(entry.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell className="text-muted-foreground">{new Date(entry.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-1">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditDialog(entry)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/10" onClick={() => openEditDialog(entry)}>
                           <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteEntry(entry)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 hover:bg-red-500/10" onClick={() => setDeleteEntry(entry)}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -248,7 +325,7 @@ export default function ExpensesPage() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-5 py-4">
               <div className="space-y-2">
-                <Label className="text-gray-700">Category</Label>
+                <Label className="text-foreground">Category</Label>
                 <Select value={selectedVerticalId} onValueChange={(v) => setValue('verticalId', v)}>
                   <SelectTrigger className="h-11"><SelectValue placeholder="Select category" /></SelectTrigger>
                   <SelectContent>
@@ -258,12 +335,12 @@ export default function ExpensesPage() {
                 {errors.verticalId && <p className="text-sm text-red-500">{errors.verticalId.message}</p>}
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-700">Amount</Label>
+                <Label className="text-foreground">Amount</Label>
                 <Input type="number" step="0.01" min="0" className="h-11" placeholder="Enter amount" {...register('amount', { valueAsNumber: true })} />
                 {errors.amount && <p className="text-sm text-red-500">{errors.amount.message}</p>}
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-700">Notes (optional)</Label>
+                <Label className="text-foreground">Notes (optional)</Label>
                 <Textarea placeholder="Add any notes..." className="resize-none" rows={3} {...register('notes')} />
               </div>
             </div>

@@ -63,23 +63,23 @@ export function Sidebar() {
   }
 
   return (
-    <div className="hidden lg:flex h-full w-72 flex-col bg-white border-r border-gray-200">
+    <div className="hidden lg:flex h-full w-72 flex-col bg-card border-r border-border">
       {/* Logo */}
-      <div className="flex h-20 items-center px-6 border-b border-gray-100">
+      <div className="flex h-20 items-center px-6 border-b border-border">
         <Link href="/dashboard" className="flex items-center gap-3">
           <div className="p-2.5 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl shadow-lg shadow-blue-600/20">
             <TrendingUp className="h-6 w-6 text-white" />
           </div>
           <div>
-            <span className="text-xl font-bold text-gray-900">The </span>
-            <span className="text-xl font-bold text-blue-600">Finlog</span>
+            <span className="text-xl font-bold text-foreground">The </span>
+            <span className="text-xl font-bold text-primary">Finlog</span>
           </div>
         </Link>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1">
-        <p className="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+        <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
           Menu
         </p>
         {navItems.map((item) => {
@@ -91,23 +91,23 @@ export function Sidebar() {
               className={cn(
                 'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200',
                 isActive
-                  ? 'bg-blue-50 text-blue-700 shadow-sm'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-primary/10 text-primary shadow-sm'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
               )}
             >
               <div
                 className={cn(
                   'p-2 rounded-lg transition-colors',
-                  isActive ? 'bg-blue-100' : item.bgColor
+                  isActive ? 'bg-primary/20' : item.bgColor
                 )}
               >
                 <item.icon
-                  className={cn('h-5 w-5', isActive ? 'text-blue-600' : item.color)}
+                  className={cn('h-5 w-5', isActive ? 'text-primary' : item.color)}
                 />
               </div>
               {item.title}
               {isActive && (
-                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-600" />
+                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" />
               )}
             </Link>
           )
@@ -115,13 +115,13 @@ export function Sidebar() {
       </nav>
 
       {/* User Section */}
-      <div className="p-4 border-t border-gray-100">
+      <div className="p-4 border-t border-border">
         <Button
           variant="ghost"
-          className="w-full justify-start gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl px-4 py-3 h-auto"
+          className="w-full justify-start gap-3 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 hover:bg-red-500/10 rounded-xl px-4 py-3 h-auto"
           onClick={handleSignOut}
         >
-          <div className="p-2 bg-gray-100 rounded-lg">
+          <div className="p-2 bg-muted rounded-lg">
             <LogOut className="h-5 w-5" />
           </div>
           Sign Out
