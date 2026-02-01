@@ -119,7 +119,7 @@ export default function LoginPage() {
       </div>
 
       {/* Right Panel - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-8 bg-gray-50">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8 bg-muted/30 dark:bg-background">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
@@ -127,27 +127,27 @@ export default function LoginPage() {
               <TrendingUp className="h-7 w-7 text-white" />
             </div>
             <div>
-              <span className="text-2xl font-bold text-gray-900">The</span>
-              <span className="text-2xl font-bold text-blue-600">Finlog</span>
+              <span className="text-2xl font-bold text-foreground">The</span>
+              <span className="text-2xl font-bold text-primary">Finlog</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+          <div className="bg-card rounded-2xl shadow-xl p-6 sm:p-8 border border-border">
             <div className="text-center mb-6 sm:mb-8">
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Welcome back</h1>
-              <p className="text-gray-500 mt-2 text-sm sm:text-base">Sign in to continue to your dashboard</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">Welcome back</h1>
+              <p className="text-muted-foreground mt-2 text-sm sm:text-base">Sign in to continue to your dashboard</p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700 font-medium">
+                <Label htmlFor="email" className="text-foreground font-medium">
                   Email Address
                 </Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="you@example.com"
-                  className="h-11 sm:h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                  className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background transition-colors"
                   {...register('email')}
                   disabled={isLoading}
                 />
@@ -158,12 +158,12 @@ export default function LoginPage() {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password" className="text-gray-700 font-medium">
+                  <Label htmlFor="password" className="text-foreground font-medium">
                     Password
                   </Label>
                   <Link
                     href="/forgot-password"
-                    className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                    className="text-sm text-primary hover:text-primary/80 font-medium transition-colors"
                   >
                     Forgot Password?
                   </Link>
@@ -172,7 +172,7 @@ export default function LoginPage() {
                   id="password"
                   type="password"
                   placeholder="Enter your password"
-                  className="h-11 sm:h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                  className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background transition-colors"
                   {...register('password')}
                   disabled={isLoading}
                 />
@@ -183,7 +183,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full h-11 sm:h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/30"
+                className="w-full h-11 sm:h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-xl transition-all duration-200 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -198,11 +198,11 @@ export default function LoginPage() {
             </form>
 
             <div className="mt-6 sm:mt-8 text-center">
-              <p className="text-gray-500 text-sm sm:text-base">
+              <p className="text-muted-foreground text-sm sm:text-base">
                 Don&apos;t have an account?{' '}
                 <Link
                   href="/register"
-                  className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                  className="text-primary hover:text-primary/80 font-medium transition-colors"
                 >
                   Create one
                 </Link>

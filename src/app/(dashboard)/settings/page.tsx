@@ -309,13 +309,13 @@ export default function SettingsPage() {
       <div className="flex-1 p-4 sm:p-6 overflow-y-auto bg-muted/50">
         <Tabs defaultValue="income" className="space-y-4 sm:space-y-6">
           <TabsList className="bg-card border shadow-sm p-1 rounded-xl w-full grid grid-cols-3 gap-1">
-            <TabsTrigger value="income" className="rounded-lg data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700 px-2 sm:px-4 text-xs sm:text-sm">
+            <TabsTrigger value="income" className="rounded-lg data-[state=active]:bg-emerald-500/10 data-[state=active]:text-emerald-700 dark:data-[state=active]:text-emerald-400 px-2 sm:px-4 text-xs sm:text-sm">
               <Wallet className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /><span className="hidden sm:inline">Income</span>
             </TabsTrigger>
-            <TabsTrigger value="expense" className="rounded-lg data-[state=active]:bg-red-50 data-[state=active]:text-red-700 px-2 sm:px-4 text-xs sm:text-sm">
+            <TabsTrigger value="expense" className="rounded-lg data-[state=active]:bg-red-500/10 data-[state=active]:text-red-700 dark:data-[state=active]:text-red-400 px-2 sm:px-4 text-xs sm:text-sm">
               <CreditCard className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /><span className="hidden sm:inline">Expenses</span>
             </TabsTrigger>
-            <TabsTrigger value="savings" className="rounded-lg data-[state=active]:bg-amber-50 data-[state=active]:text-amber-700 px-2 sm:px-4 text-xs sm:text-sm">
+            <TabsTrigger value="savings" className="rounded-lg data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-700 dark:data-[state=active]:text-amber-400 px-2 sm:px-4 text-xs sm:text-sm">
               <PiggyBank className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /><span className="hidden sm:inline">Savings</span>
             </TabsTrigger>
           </TabsList>
@@ -323,76 +323,113 @@ export default function SettingsPage() {
           {/* Income Sources Tab */}
           <TabsContent value="income">
             <Card className="border-0 shadow-sm">
-              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border-b bg-gradient-to-r from-emerald-50 to-emerald-100/50 rounded-t-lg p-4 sm:p-6">
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border-b bg-emerald-500/10 dark:bg-emerald-500/5 rounded-t-lg p-4 sm:p-6">
                 <div>
-                  <CardTitle className="text-base sm:text-lg text-emerald-900">Income Sources</CardTitle>
-                  <CardDescription className="text-sm text-emerald-700">Manage categories for your income entries</CardDescription>
+                  <CardTitle className="text-base sm:text-lg text-foreground">Income Sources</CardTitle>
+                  <CardDescription className="text-sm text-muted-foreground">Manage categories for your income entries</CardDescription>
                 </div>
                 <Button onClick={openAddIncomeDialog} className="bg-emerald-600 hover:bg-emerald-700 w-full sm:w-auto">
                   <Plus className="h-4 w-4 mr-2" />Add Source
                 </Button>
               </CardHeader>
-              <CardContent className="p-0 overflow-x-auto">
-                <Table className="min-w-[600px]">
-                  <TableHeader>
-                    <TableRow className="bg-muted/50 hover:bg-muted/50">
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Name</TableHead>
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Entries</TableHead>
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Type</TableHead>
-                      <TableHead className="text-right font-semibold text-foreground text-xs sm:text-sm">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {incomeSources.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={4} className="text-center py-12">
-                          <div className="flex flex-col items-center gap-3">
-                            <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center">
-                              <Wallet className="h-8 w-8 text-emerald-600" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-foreground">No income sources</p>
-                              <p className="text-sm text-muted-foreground mt-1">Add your first income source to get started</p>
-                            </div>
-                          </div>
-                        </TableCell>
+              <CardContent className="p-4 sm:p-0">
+                {/* Mobile Card View */}
+                <div className="sm:hidden space-y-3">
+                  {incomeSources.length === 0 ? (
+                    <div className="flex flex-col items-center gap-3 py-8">
+                      <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center">
+                        <Wallet className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+                      </div>
+                      <div className="text-center">
+                        <p className="font-medium text-foreground">No income sources</p>
+                        <p className="text-sm text-muted-foreground mt-1">Add your first income source</p>
+                      </div>
+                    </div>
+                  ) : incomeSources.map((source) => (
+                    <div key={source.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                          <Wallet className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground">{source.name}</p>
+                          <p className="text-xs text-muted-foreground">{source._count.incomeEntries} entries</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-1">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEditIncomeDialog(source)}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600" onClick={() => setDeleteIncomeSource(source)} disabled={source._count.incomeEntries > 0}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {/* Desktop Table View */}
+                <div className="hidden sm:block overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-muted/50 hover:bg-muted/50">
+                        <TableHead className="font-semibold text-foreground">Name</TableHead>
+                        <TableHead className="font-semibold text-foreground">Entries</TableHead>
+                        <TableHead className="font-semibold text-foreground">Type</TableHead>
+                        <TableHead className="text-right font-semibold text-foreground">Actions</TableHead>
                       </TableRow>
-                    ) : incomeSources.map((source) => (
-                      <TableRow key={source.id} className="hover:bg-muted/50">
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                              <Wallet className="h-4 w-4 text-emerald-600" />
+                    </TableHeader>
+                    <TableBody>
+                      {incomeSources.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={4} className="text-center py-12">
+                            <div className="flex flex-col items-center gap-3">
+                              <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center">
+                                <Wallet className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+                              </div>
+                              <div>
+                                <p className="font-medium text-foreground">No income sources</p>
+                                <p className="text-sm text-muted-foreground mt-1">Add your first income source to get started</p>
+                              </div>
                             </div>
-                            <span className="font-medium text-foreground">{source.name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-foreground">
-                            {source._count.incomeEntries} entries
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          {source.isDefault ? (
-                            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-muted-foreground">Default</span>
-                          ) : (
-                            <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700">Custom</span>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-1">
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditIncomeDialog(source)}>
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteIncomeSource(source)} disabled={source._count.incomeEntries > 0}>
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                          </TableCell>
+                        </TableRow>
+                      ) : incomeSources.map((source) => (
+                        <TableRow key={source.id} className="hover:bg-muted/50">
+                          <TableCell>
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                                <Wallet className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                              </div>
+                              <span className="font-medium text-foreground">{source.name}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-foreground">
+                              {source._count.incomeEntries} entries
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            {source.isDefault ? (
+                              <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">Default</span>
+                            ) : (
+                              <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400">Custom</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex justify-end gap-1">
+                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600 hover:bg-blue-500/10" onClick={() => openEditIncomeDialog(source)}>
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-500/10" onClick={() => setDeleteIncomeSource(source)} disabled={source._count.incomeEntries > 0}>
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -400,76 +437,113 @@ export default function SettingsPage() {
           {/* Expense Verticals Tab */}
           <TabsContent value="expense">
             <Card className="border-0 shadow-sm">
-              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border-b bg-gradient-to-r from-red-50 to-red-100/50 rounded-t-lg p-4 sm:p-6">
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border-b bg-red-500/10 dark:bg-red-500/5 rounded-t-lg p-4 sm:p-6">
                 <div>
-                  <CardTitle className="text-base sm:text-lg text-red-900">Expense Categories</CardTitle>
-                  <CardDescription className="text-sm text-red-700">Manage categories for your expense entries</CardDescription>
+                  <CardTitle className="text-base sm:text-lg text-foreground">Expense Categories</CardTitle>
+                  <CardDescription className="text-sm text-muted-foreground">Manage categories for your expense entries</CardDescription>
                 </div>
                 <Button onClick={openAddExpenseDialog} className="bg-red-600 hover:bg-red-700 w-full sm:w-auto">
                   <Plus className="h-4 w-4 mr-2" />Add Category
                 </Button>
               </CardHeader>
-              <CardContent className="p-0 overflow-x-auto">
-                <Table className="min-w-[600px]">
-                  <TableHeader>
-                    <TableRow className="bg-muted/50 hover:bg-muted/50">
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Name</TableHead>
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Entries</TableHead>
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Type</TableHead>
-                      <TableHead className="text-right font-semibold text-foreground text-xs sm:text-sm">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {expenseVerticals.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={4} className="text-center py-12">
-                          <div className="flex flex-col items-center gap-3">
-                            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-                              <CreditCard className="h-8 w-8 text-red-600" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-foreground">No expense categories</p>
-                              <p className="text-sm text-muted-foreground mt-1">Add your first expense category to get started</p>
-                            </div>
-                          </div>
-                        </TableCell>
+              <CardContent className="p-4 sm:p-0">
+                {/* Mobile Card View */}
+                <div className="sm:hidden space-y-3">
+                  {expenseVerticals.length === 0 ? (
+                    <div className="flex flex-col items-center gap-3 py-8">
+                      <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center">
+                        <CreditCard className="h-8 w-8 text-red-600 dark:text-red-400" />
+                      </div>
+                      <div className="text-center">
+                        <p className="font-medium text-foreground">No expense categories</p>
+                        <p className="text-sm text-muted-foreground mt-1">Add your first expense category</p>
+                      </div>
+                    </div>
+                  ) : expenseVerticals.map((vertical) => (
+                    <div key={vertical.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center">
+                          <CreditCard className="h-5 w-5 text-red-600 dark:text-red-400" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground">{vertical.name}</p>
+                          <p className="text-xs text-muted-foreground">{vertical._count.expenseEntries} entries</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-1">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEditExpenseDialog(vertical)}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600" onClick={() => setDeleteExpenseVertical(vertical)} disabled={vertical._count.expenseEntries > 0}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {/* Desktop Table View */}
+                <div className="hidden sm:block overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-muted/50 hover:bg-muted/50">
+                        <TableHead className="font-semibold text-foreground">Name</TableHead>
+                        <TableHead className="font-semibold text-foreground">Entries</TableHead>
+                        <TableHead className="font-semibold text-foreground">Type</TableHead>
+                        <TableHead className="text-right font-semibold text-foreground">Actions</TableHead>
                       </TableRow>
-                    ) : expenseVerticals.map((vertical) => (
-                      <TableRow key={vertical.id} className="hover:bg-muted/50">
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                              <CreditCard className="h-4 w-4 text-red-600" />
+                    </TableHeader>
+                    <TableBody>
+                      {expenseVerticals.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={4} className="text-center py-12">
+                            <div className="flex flex-col items-center gap-3">
+                              <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center">
+                                <CreditCard className="h-8 w-8 text-red-600 dark:text-red-400" />
+                              </div>
+                              <div>
+                                <p className="font-medium text-foreground">No expense categories</p>
+                                <p className="text-sm text-muted-foreground mt-1">Add your first expense category to get started</p>
+                              </div>
                             </div>
-                            <span className="font-medium text-foreground">{vertical.name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-foreground">
-                            {vertical._count.expenseEntries} entries
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          {vertical.isDefault ? (
-                            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-muted-foreground">Default</span>
-                          ) : (
-                            <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-1 text-xs font-medium text-red-700">Custom</span>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-1">
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditExpenseDialog(vertical)}>
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteExpenseVertical(vertical)} disabled={vertical._count.expenseEntries > 0}>
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                          </TableCell>
+                        </TableRow>
+                      ) : expenseVerticals.map((vertical) => (
+                        <TableRow key={vertical.id} className="hover:bg-muted/50">
+                          <TableCell>
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-red-500/10 rounded-lg flex items-center justify-center">
+                                <CreditCard className="h-4 w-4 text-red-600 dark:text-red-400" />
+                              </div>
+                              <span className="font-medium text-foreground">{vertical.name}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-foreground">
+                              {vertical._count.expenseEntries} entries
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            {vertical.isDefault ? (
+                              <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">Default</span>
+                            ) : (
+                              <span className="inline-flex items-center rounded-full bg-red-500/10 px-2.5 py-1 text-xs font-medium text-red-700 dark:text-red-400">Custom</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex justify-end gap-1">
+                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600 hover:bg-blue-500/10" onClick={() => openEditExpenseDialog(vertical)}>
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-500/10" onClick={() => setDeleteExpenseVertical(vertical)} disabled={vertical._count.expenseEntries > 0}>
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -477,85 +551,130 @@ export default function SettingsPage() {
           {/* Savings Instruments Tab */}
           <TabsContent value="savings">
             <Card className="border-0 shadow-sm">
-              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border-b bg-gradient-to-r from-amber-50 to-amber-100/50 rounded-t-lg p-4 sm:p-6">
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border-b bg-amber-500/10 dark:bg-amber-500/5 rounded-t-lg p-4 sm:p-6">
                 <div>
-                  <CardTitle className="text-base sm:text-lg text-amber-900">Savings Instruments</CardTitle>
-                  <CardDescription className="text-sm text-amber-700">Manage instruments for your savings and investments</CardDescription>
+                  <CardTitle className="text-base sm:text-lg text-foreground">Savings Instruments</CardTitle>
+                  <CardDescription className="text-sm text-muted-foreground">Manage instruments for your savings and investments</CardDescription>
                 </div>
                 <Button onClick={openAddSavingsDialog} className="bg-amber-500 hover:bg-amber-600 w-full sm:w-auto">
                   <Plus className="h-4 w-4 mr-2" />Add Instrument
                 </Button>
               </CardHeader>
-              <CardContent className="p-0 overflow-x-auto">
-                <Table className="min-w-[700px]">
-                  <TableHeader>
-                    <TableRow className="bg-muted/50 hover:bg-muted/50">
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Category</TableHead>
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Name</TableHead>
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Entries</TableHead>
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Type</TableHead>
-                      <TableHead className="text-right font-semibold text-foreground text-xs sm:text-sm">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {savingsInstruments.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={5} className="text-center py-12">
-                          <div className="flex flex-col items-center gap-3">
-                            <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
-                              <PiggyBank className="h-8 w-8 text-amber-600" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-foreground">No savings instruments</p>
-                              <p className="text-sm text-muted-foreground mt-1">Add your first savings instrument to get started</p>
+              <CardContent className="p-4 sm:p-0">
+                {/* Mobile Card View */}
+                <div className="sm:hidden space-y-3">
+                  {savingsInstruments.length === 0 ? (
+                    <div className="flex flex-col items-center gap-3 py-8">
+                      <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center">
+                        <PiggyBank className="h-8 w-8 text-amber-600 dark:text-amber-400" />
+                      </div>
+                      <div className="text-center">
+                        <p className="font-medium text-foreground">No savings instruments</p>
+                        <p className="text-sm text-muted-foreground mt-1">Add your first savings instrument</p>
+                      </div>
+                    </div>
+                  ) : savingsInstruments.map((instrument) => {
+                    const style = getCategoryStyle(instrument.category)
+                    return (
+                      <div key={instrument.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <PiggyBank className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-medium text-foreground truncate">{instrument.name}</p>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${style.bg} ${style.text}`}>
+                                {savingsCategoryLabel(instrument.category)}
+                              </span>
+                              <span className="text-xs text-muted-foreground">{instrument._count.savingsEntries} entries</span>
                             </div>
                           </div>
-                        </TableCell>
+                        </div>
+                        <div className="flex gap-1 flex-shrink-0">
+                          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEditSavingsDialog(instrument)}>
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600" onClick={() => setDeleteSavingsInstrument(instrument)} disabled={instrument._count.savingsEntries > 0}>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+                {/* Desktop Table View */}
+                <div className="hidden sm:block overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-muted/50 hover:bg-muted/50">
+                        <TableHead className="font-semibold text-foreground">Category</TableHead>
+                        <TableHead className="font-semibold text-foreground">Name</TableHead>
+                        <TableHead className="font-semibold text-foreground">Entries</TableHead>
+                        <TableHead className="font-semibold text-foreground">Type</TableHead>
+                        <TableHead className="text-right font-semibold text-foreground">Actions</TableHead>
                       </TableRow>
-                    ) : savingsInstruments.map((instrument) => {
-                      const style = getCategoryStyle(instrument.category)
-                      return (
-                        <TableRow key={instrument.id} className="hover:bg-muted/50">
-                          <TableCell>
-                            <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${style.bg} ${style.text}`}>
-                              {savingsCategoryLabel(instrument.category)}
-                            </span>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-                                <PiggyBank className="h-4 w-4 text-amber-600" />
+                    </TableHeader>
+                    <TableBody>
+                      {savingsInstruments.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={5} className="text-center py-12">
+                            <div className="flex flex-col items-center gap-3">
+                              <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center">
+                                <PiggyBank className="h-8 w-8 text-amber-600 dark:text-amber-400" />
                               </div>
-                              <span className="font-medium text-foreground">{instrument.name}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-foreground">
-                              {instrument._count.savingsEntries} entries
-                            </span>
-                          </TableCell>
-                          <TableCell>
-                            {instrument.isDefault ? (
-                              <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-muted-foreground">Default</span>
-                            ) : (
-                              <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700">Custom</span>
-                            )}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-1">
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600 hover:bg-blue-50" onClick={() => openEditSavingsDialog(instrument)}>
-                                <Pencil className="h-4 w-4" />
-                              </Button>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteSavingsInstrument(instrument)} disabled={instrument._count.savingsEntries > 0}>
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
+                              <div>
+                                <p className="font-medium text-foreground">No savings instruments</p>
+                                <p className="text-sm text-muted-foreground mt-1">Add your first savings instrument to get started</p>
+                              </div>
                             </div>
                           </TableCell>
                         </TableRow>
-                      )
-                    })}
-                  </TableBody>
-                </Table>
+                      ) : savingsInstruments.map((instrument) => {
+                        const style = getCategoryStyle(instrument.category)
+                        return (
+                          <TableRow key={instrument.id} className="hover:bg-muted/50">
+                            <TableCell>
+                              <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${style.bg} ${style.text}`}>
+                                {savingsCategoryLabel(instrument.category)}
+                              </span>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                                  <PiggyBank className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                                </div>
+                                <span className="font-medium text-foreground">{instrument.name}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-foreground">
+                                {instrument._count.savingsEntries} entries
+                              </span>
+                            </TableCell>
+                            <TableCell>
+                              {instrument.isDefault ? (
+                                <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">Default</span>
+                              ) : (
+                                <span className="inline-flex items-center rounded-full bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-700 dark:text-amber-400">Custom</span>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex justify-end gap-1">
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-blue-600 hover:bg-blue-500/10" onClick={() => openEditSavingsDialog(instrument)}>
+                                  <Pencil className="h-4 w-4" />
+                                </Button>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-500/10" onClick={() => setDeleteSavingsInstrument(instrument)} disabled={instrument._count.savingsEntries > 0}>
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        )
+                      })}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

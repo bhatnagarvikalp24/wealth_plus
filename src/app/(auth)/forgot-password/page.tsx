@@ -113,7 +113,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-muted/30 dark:bg-background">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
@@ -121,31 +121,31 @@ export default function ForgotPasswordPage() {
             <TrendingUp className="h-7 w-7 text-white" />
           </div>
           <div>
-            <span className="text-2xl font-bold text-gray-900">The</span>
-            <span className="text-2xl font-bold text-emerald-600">Finlog</span>
+            <span className="text-2xl font-bold text-foreground">The</span>
+            <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">Finlog</span>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <div className="bg-card rounded-2xl shadow-xl p-6 sm:p-8 border border-border">
           {step === 'email' && (
             <>
               <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">Forgot Password?</h1>
-                <p className="text-gray-500 mt-2">
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground">Forgot Password?</h1>
+                <p className="text-muted-foreground mt-2 text-sm sm:text-base">
                   Enter your email to verify your identity
                 </p>
               </div>
 
               <form onSubmit={handleEmailSubmit} className="space-y-5">
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-gray-700 font-medium">
+                  <Label htmlFor="email" className="text-foreground font-medium">
                     Email Address
                   </Label>
                   <Input
                     id="email"
                     type="email"
                     placeholder="you@example.com"
-                    className="h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                    className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background transition-colors"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isLoading}
@@ -155,7 +155,7 @@ export default function ForgotPasswordPage() {
 
                 <Button
                   type="submit"
-                  className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl"
+                  className="w-full h-11 sm:h-12 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg shadow-emerald-600/25 hover:shadow-xl hover:shadow-emerald-600/30"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -183,29 +183,29 @@ export default function ForgotPasswordPage() {
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back
                 </Button>
-                <h1 className="text-2xl font-bold text-gray-900">Security Question</h1>
-                <p className="text-gray-500 mt-2">
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground">Security Question</h1>
+                <p className="text-muted-foreground mt-2 text-sm sm:text-base">
                   Answer your security question to reset your password
                 </p>
               </div>
 
               <form onSubmit={handlePasswordReset} className="space-y-5">
                 <div className="space-y-2">
-                  <Label className="text-gray-700 font-medium">Your Question</Label>
-                  <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-                    <p className="text-gray-800">{securityQuestion}</p>
+                  <Label className="text-foreground font-medium">Your Question</Label>
+                  <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                    <p className="text-foreground">{securityQuestion}</p>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="securityAnswer" className="text-gray-700 font-medium">
+                  <Label htmlFor="securityAnswer" className="text-foreground font-medium">
                     Your Answer
                   </Label>
                   <Input
                     id="securityAnswer"
                     type="text"
                     placeholder="Enter your answer"
-                    className="h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                    className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background transition-colors"
                     value={securityAnswer}
                     onChange={(e) => setSecurityAnswer(e.target.value)}
                     disabled={isLoading}
@@ -214,14 +214,14 @@ export default function ForgotPasswordPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="newPassword" className="text-gray-700 font-medium">
+                  <Label htmlFor="newPassword" className="text-foreground font-medium">
                     New Password
                   </Label>
                   <Input
                     id="newPassword"
                     type="password"
                     placeholder="Minimum 6 characters"
-                    className="h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                    className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background transition-colors"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     disabled={isLoading}
@@ -230,14 +230,14 @@ export default function ForgotPasswordPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-gray-700 font-medium">
+                  <Label htmlFor="confirmPassword" className="text-foreground font-medium">
                     Confirm Password
                   </Label>
                   <Input
                     id="confirmPassword"
                     type="password"
                     placeholder="Re-enter your password"
-                    className="h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                    className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background transition-colors"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     disabled={isLoading}
@@ -247,7 +247,7 @@ export default function ForgotPasswordPage() {
 
                 <Button
                   type="submit"
-                  className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl"
+                  className="w-full h-11 sm:h-12 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg shadow-emerald-600/25 hover:shadow-xl hover:shadow-emerald-600/30"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -266,9 +266,9 @@ export default function ForgotPasswordPage() {
           {step === 'success' && (
             <>
               <div className="text-center py-8">
-                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg
-                    className="w-8 h-8 text-emerald-600"
+                    className="w-8 h-8 text-emerald-600 dark:text-emerald-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -281,10 +281,10 @@ export default function ForgotPasswordPage() {
                     />
                   </svg>
                 </div>
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
                   Password Reset Successful!
                 </h1>
-                <p className="text-gray-500 mb-8">
+                <p className="text-muted-foreground mb-8 text-sm sm:text-base">
                   You can now sign in with your new password
                 </p>
                 <Button
@@ -300,7 +300,7 @@ export default function ForgotPasswordPage() {
           <div className="mt-6 text-center">
             <Link
               href="/login"
-              className="text-emerald-600 hover:text-emerald-700 font-medium text-sm transition-colors"
+              className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium text-sm transition-colors"
             >
               Back to Sign In
             </Link>

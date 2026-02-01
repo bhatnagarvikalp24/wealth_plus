@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await hash(password, 12)
     const hashedSecurityAnswer = await hash(securityAnswer.toLowerCase().trim(), 12)
 
-    // Create user
+    // Create user (onboarding wizard will set up categories)
     const user = await prisma.user.create({
       data: {
         name,
@@ -42,49 +42,6 @@ export async function POST(request: NextRequest) {
         securityQuestion,
         securityAnswer: hashedSecurityAnswer,
       },
-    })
-
-    // Create default income sources for the user
-    const defaultIncomeSources = [
-      'Salary',
-      'Freelance',
-      'Business',
-      'Interest',
-      'Dividends',
-      'Rental',
-      'Other',
-    ]
-
-    await prisma.incomeSource.createMany({
-      data: defaultIncomeSources.map((name) => ({
-        name,
-        userId: user.id,
-        isDefault: true,
-      })),
-    })
-
-    // Create default expense verticals for the user
-    const defaultExpenseVerticals = [
-      'Rent/Home',
-      'Groceries',
-      'Eating Out',
-      'Travel',
-      'Utilities',
-      'Subscriptions',
-      'Shopping',
-      'Health',
-      'Insurance',
-      'Family',
-      'EMI/Debt',
-      'Misc',
-    ]
-
-    await prisma.expenseVertical.createMany({
-      data: defaultExpenseVerticals.map((name) => ({
-        name,
-        userId: user.id,
-        isDefault: true,
-      })),
     })
 
     return NextResponse.json(

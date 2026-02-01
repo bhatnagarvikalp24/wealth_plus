@@ -124,7 +124,7 @@ export default function RegisterPage() {
       </div>
 
       {/* Right Panel - Register Form */}
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-8 bg-gray-50">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8 bg-muted/30 dark:bg-background">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
@@ -132,26 +132,26 @@ export default function RegisterPage() {
               <TrendingUp className="h-7 w-7 text-white" />
             </div>
             <div>
-              <span className="text-2xl font-bold text-gray-900">The</span>
-              <span className="text-2xl font-bold text-emerald-600">Finlog</span>
+              <span className="text-2xl font-bold text-foreground">The</span>
+              <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">Finlog</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+          <div className="bg-card rounded-2xl shadow-xl p-6 sm:p-8 border border-border">
             <div className="text-center mb-6 sm:mb-8">
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Create your account</h1>
-              <p className="text-gray-500 mt-2 text-sm sm:text-base">Start tracking your finances in minutes</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">Create your account</h1>
+              <p className="text-muted-foreground mt-2 text-sm sm:text-base">Start tracking your finances in minutes</p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-gray-700 font-medium">
+                <Label htmlFor="name" className="text-foreground font-medium">
                   Full Name
                 </Label>
                 <Input
                   id="name"
                   placeholder="John Doe"
-                  className="h-11 sm:h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                  className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background transition-colors"
                   {...register('name')}
                   disabled={isLoading}
                 />
@@ -161,14 +161,14 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700 font-medium">
+                <Label htmlFor="email" className="text-foreground font-medium">
                   Email Address
                 </Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="you@example.com"
-                  className="h-11 sm:h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                  className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background transition-colors"
                   {...register('email')}
                   disabled={isLoading}
                 />
@@ -178,14 +178,14 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-700 font-medium">
+                <Label htmlFor="password" className="text-foreground font-medium">
                   Password
                 </Label>
                 <Input
                   id="password"
                   type="password"
                   placeholder="Minimum 6 characters"
-                  className="h-11 sm:h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                  className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background transition-colors"
                   {...register('password')}
                   disabled={isLoading}
                 />
@@ -195,7 +195,7 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="securityQuestion" className="text-gray-700 font-medium">
+                <Label htmlFor="securityQuestion" className="text-foreground font-medium">
                   Security Question
                 </Label>
                 <Select
@@ -206,7 +206,7 @@ export default function RegisterPage() {
                   }}
                   disabled={isLoading}
                 >
-                  <SelectTrigger className="h-11 sm:h-12 bg-gray-50 border-gray-200 focus:bg-white">
+                  <SelectTrigger className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background">
                     <SelectValue placeholder="Select a security question" />
                   </SelectTrigger>
                   <SelectContent>
@@ -223,21 +223,21 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="securityAnswer" className="text-gray-700 font-medium">
+                <Label htmlFor="securityAnswer" className="text-foreground font-medium">
                   Security Answer
                 </Label>
                 <Input
                   id="securityAnswer"
                   type="text"
                   placeholder="Your answer"
-                  className="h-11 sm:h-12 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                  className="h-11 sm:h-12 bg-muted/50 border-border focus:bg-background transition-colors"
                   {...register('securityAnswer')}
                   disabled={isLoading}
                 />
                 {errors.securityAnswer && (
                   <p className="text-sm text-red-500">{errors.securityAnswer.message}</p>
                 )}
-                <p className="text-xs text-amber-600">
+                <p className="text-xs text-amber-600 dark:text-amber-400">
                   Please remember your answer. It will be required for password recovery.
                 </p>
               </div>
@@ -259,11 +259,11 @@ export default function RegisterPage() {
             </form>
 
             <div className="mt-6 sm:mt-8 text-center">
-              <p className="text-gray-500 text-sm sm:text-base">
+              <p className="text-muted-foreground text-sm sm:text-base">
                 Already have an account?{' '}
                 <Link
                   href="/login"
-                  className="text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
+                  className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium transition-colors"
                 >
                   Sign in
                 </Link>
