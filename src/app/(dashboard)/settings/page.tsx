@@ -323,13 +323,8 @@ export default function SettingsPage() {
         throw new Error(error.error || 'Failed to delete account')
       }
 
-      toast({
-        title: 'Account Deleted',
-        description: 'Your account and all data have been permanently deleted.',
-      })
-
-      // Sign out and redirect to login
-      await signOut({ callbackUrl: '/login' })
+      // Sign out and redirect to login immediately
+      signOut({ callbackUrl: '/login', redirect: true })
     } catch (error) {
       toast({
         title: 'Error',
