@@ -44,10 +44,7 @@ export async function DELETE() {
       where: { userId },
     })
 
-    // Delete savings instruments
-    await prisma.savingsInstrument.deleteMany({
-      where: { userId },
-    })
+    // Note: SavingsInstrument is a shared/global table, not user-specific
 
     // Finally, delete the user
     await prisma.user.delete({
