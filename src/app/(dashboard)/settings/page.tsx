@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Plus, Pencil, Trash2, Wallet, CreditCard, PiggyBank, Settings } from 'lucide-react'
+import { Plus, Pencil, Trash2, Wallet, CreditCard, PiggyBank, User, AlertTriangle, Loader2 } from 'lucide-react'
+import { signOut } from 'next-auth/react'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -81,6 +82,11 @@ export default function SettingsPage() {
   const [deleteSavingsInstrument, setDeleteSavingsInstrument] = useState<SavingsInstrument | null>(null)
   const [savingsInstrumentName, setSavingsInstrumentName] = useState('')
   const [savingsInstrumentCategory, setSavingsInstrumentCategory] = useState('')
+
+  // Delete account state
+  const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false)
+  const [deleteConfirmText, setDeleteConfirmText] = useState('')
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false)
 
   useEffect(() => {
     fetchIncomeSources()
@@ -302,13 +308,45 @@ export default function SettingsPage() {
 
   const getCategoryStyle = (category: string) => categoryColors[category] || categoryColors.FD_RD
 
+  // Delete account handler
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText !== 'DELETE') return
+
+    setIsDeletingAccount(true)
+    try {
+      const response = await fetch('/api/auth/delete-account', {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to delete account')
+      }
+
+      toast({
+        title: 'Account Deleted',
+        description: 'Your account and all data have been permanently deleted.',
+      })
+
+      // Sign out and redirect to login
+      await signOut({ callbackUrl: '/login' })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to delete account',
+        variant: 'destructive',
+      })
+      setIsDeletingAccount(false)
+    }
+  }
+
   return (
     <div className="flex flex-col h-full">
       <Header title="Settings" description="Manage your categories and master data" />
 
       <div className="flex-1 p-4 sm:p-6 overflow-y-auto bg-muted/50">
         <Tabs defaultValue="income" className="space-y-4 sm:space-y-6">
-          <TabsList className="bg-card border shadow-sm p-1 rounded-xl w-full grid grid-cols-3 gap-1">
+          <TabsList className="bg-card border shadow-sm p-1 rounded-xl w-full grid grid-cols-4 gap-1">
             <TabsTrigger value="income" className="rounded-lg data-[state=active]:bg-emerald-500/10 data-[state=active]:text-emerald-700 dark:data-[state=active]:text-emerald-400 px-2 sm:px-4 text-xs sm:text-sm">
               <Wallet className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /><span className="hidden sm:inline">Income</span>
             </TabsTrigger>
@@ -317,6 +355,9 @@ export default function SettingsPage() {
             </TabsTrigger>
             <TabsTrigger value="savings" className="rounded-lg data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-700 dark:data-[state=active]:text-amber-400 px-2 sm:px-4 text-xs sm:text-sm">
               <PiggyBank className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /><span className="hidden sm:inline">Savings</span>
+            </TabsTrigger>
+            <TabsTrigger value="account" className="rounded-lg data-[state=active]:bg-zinc-500/10 data-[state=active]:text-zinc-700 dark:data-[state=active]:text-zinc-400 px-2 sm:px-4 text-xs sm:text-sm">
+              <User className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" /><span className="hidden sm:inline">Account</span>
             </TabsTrigger>
           </TabsList>
 
@@ -543,6 +584,40 @@ export default function SettingsPage() {
                       ))}
                     </TableBody>
                   </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Account Tab */}
+          <TabsContent value="account">
+            <Card className="border-0 shadow-sm">
+              <CardHeader className="border-b bg-zinc-500/10 dark:bg-zinc-500/5 rounded-t-lg p-4 sm:p-6">
+                <CardTitle className="text-base sm:text-lg text-foreground">Account Settings</CardTitle>
+                <CardDescription className="text-sm text-muted-foreground">Manage your account preferences</CardDescription>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6 space-y-6">
+                {/* Danger Zone */}
+                <div className="border border-red-200 dark:border-red-900/50 rounded-xl p-4 sm:p-6 bg-red-50/50 dark:bg-red-950/20">
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className="p-2 bg-red-500/10 rounded-lg">
+                      <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-red-700 dark:text-red-400">Danger Zone</h3>
+                      <p className="text-sm text-red-600/80 dark:text-red-400/80 mt-1">
+                        Once you delete your account, there is no going back. Please be certain.
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="destructive"
+                    onClick={() => setDeleteAccountDialogOpen(true)}
+                    className="w-full sm:w-auto"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete Account
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -794,6 +869,76 @@ export default function SettingsPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Delete Account Confirmation Dialog */}
+      <Dialog open={deleteAccountDialogOpen} onOpenChange={(open) => {
+        setDeleteAccountDialogOpen(open)
+        if (!open) setDeleteConfirmText('')
+      }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl text-red-600 dark:text-red-400 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5" />
+              Delete Account
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="p-4 bg-red-50 dark:bg-red-950/30 rounded-lg border border-red-200 dark:border-red-900/50">
+              <p className="text-sm text-red-700 dark:text-red-400 font-medium mb-2">
+                This will permanently delete:
+              </p>
+              <ul className="text-sm text-red-600/80 dark:text-red-400/80 space-y-1 list-disc list-inside">
+                <li>Your account and profile</li>
+                <li>All income entries</li>
+                <li>All expense entries</li>
+                <li>All savings entries</li>
+                <li>All custom categories</li>
+              </ul>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-foreground">
+                Type <span className="font-bold text-red-600">DELETE</span> to confirm
+              </Label>
+              <Input
+                value={deleteConfirmText}
+                onChange={(e) => setDeleteConfirmText(e.target.value)}
+                placeholder="Type DELETE here"
+                className="h-11"
+                disabled={isDeletingAccount}
+              />
+            </div>
+          </div>
+          <DialogFooter className="gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setDeleteAccountDialogOpen(false)
+                setDeleteConfirmText('')
+              }}
+              disabled={isDeletingAccount}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteAccount}
+              disabled={deleteConfirmText !== 'DELETE' || isDeletingAccount}
+            >
+              {isDeletingAccount ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Forever
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
