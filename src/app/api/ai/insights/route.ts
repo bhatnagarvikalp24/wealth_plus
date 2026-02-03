@@ -132,6 +132,8 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Insights error:', error)
 
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+
     // Return a fallback response if AI fails
     return NextResponse.json({
       insights: {
@@ -142,7 +144,8 @@ export async function GET(request: NextRequest) {
         topExpenseCategory: 'N/A',
         trend: 'stable',
       },
-      error: 'AI service unavailable',
+      error: errorMessage.includes('API_KEY') ? 'OpenAI API key not configured' : 'AI service unavailable',
+      debug: process.env.NODE_ENV === 'development' ? errorMessage : undefined,
     })
   }
 }
