@@ -51,7 +51,11 @@ export function SpendingAlerts({ month, compact = false }: SpendingAlertsProps) 
   }
 
   const dismissAlert = (index: number) => {
-    setDismissed(prev => new Set([...prev, index]))
+    setDismissed(prev => {
+      const newSet = new Set(prev)
+      newSet.add(index)
+      return newSet
+    })
   }
 
   const visibleAlerts = alerts.filter((_, i) => !dismissed.has(i))
