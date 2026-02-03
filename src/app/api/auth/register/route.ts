@@ -18,23 +18,23 @@ export async function POST(request: NextRequest) {
     const { name, email, password, securityQuestion, securityAnswer } = validation.data
     const normalizedEmail = email.toLowerCase()
 
-    // OTP verification disabled for now
-    // const verification = await prisma.emailVerification.findFirst({
-    //   where: {
-    //     email: normalizedEmail,
-    //     verified: true,
-    //   },
-    //   orderBy: {
-    //     createdAt: 'desc',
-    //   },
-    // })
+    // Verify that OTP was validated for this email
+    const verification = await prisma.emailVerification.findFirst({
+      where: {
+        email: normalizedEmail,
+        verified: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
 
-    // if (!verification) {
-    //   return NextResponse.json(
-    //     { error: 'Please verify your email first' },
-    //     { status: 400 }
-    //   )
-    // }
+    if (!verification) {
+      return NextResponse.json(
+        { error: 'Please verify your email first' },
+        { status: 400 }
+      )
+    }
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -63,10 +63,10 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Clean up verification records for this email (disabled with OTP)
-    // await prisma.emailVerification.deleteMany({
-    //   where: { email: normalizedEmail },
-    // })
+    // Clean up verification records for this email
+    await prisma.emailVerification.deleteMany({
+      where: { email: normalizedEmail },
+    })
 
     return NextResponse.json(
       {
