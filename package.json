@@ -16,6 +16,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.72.1",
     "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "^5.10.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",

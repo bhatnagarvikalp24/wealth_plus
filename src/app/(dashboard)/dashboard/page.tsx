@@ -30,6 +30,8 @@ import {
 import { Header } from '@/components/layout/header'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { AIInsights } from '@/components/ai-insights'
+import { SpendingAlerts } from '@/components/spending-alerts'
 import {
   Select,
   SelectContent,
@@ -326,6 +328,12 @@ export default function DashboardPage() {
               <p className="text-xs text-muted-foreground/70">of income</p>
             </CardContent>
           </Card>
+        </div>
+
+        {/* AI Insights & Alerts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <AIInsights month={monthlyData[monthlyData.length - 1]?.month} />
+          <SpendingAlerts month={monthlyData[monthlyData.length - 1]?.month} />
         </div>
 
         {/* Trend Chart */}
