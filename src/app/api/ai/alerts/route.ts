@@ -4,6 +4,9 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { generateSpendingAlerts, type FinancialData } from '@/lib/ai'
 
+// Force dynamic rendering - this route uses headers via getServerSession
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
