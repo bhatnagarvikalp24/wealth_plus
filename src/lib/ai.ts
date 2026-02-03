@@ -1,17 +1,17 @@
-import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 
 // Lazy initialization to prevent build errors
-let anthropicClient: Anthropic | null = null
+let openaiClient: OpenAI | null = null
 
-function getClient(): Anthropic {
-  if (!anthropicClient) {
-    const apiKey = process.env.ANTHROPIC_API_KEY
+function getClient(): OpenAI {
+  if (!openaiClient) {
+    const apiKey = process.env.OPENAI_API_KEY
     if (!apiKey) {
-      throw new Error('ANTHROPIC_API_KEY is not configured')
+      throw new Error('OPENAI_API_KEY is not configured')
     }
-    anthropicClient = new Anthropic({ apiKey })
+    openaiClient = new OpenAI({ apiKey })
   }
-  return anthropicClient
+  return openaiClient
 }
 
 export interface FinancialData {
@@ -82,19 +82,20 @@ Please respond with a JSON object (no markdown, just pure JSON) with this struct
   "trend": "improving" | "stable" | "needs_attention"
 }`
 
-  const response = await client.messages.create({
-    model: 'claude-3-haiku-20240307',
-    max_tokens: 1024,
+  const response = await client.chat.completions.create({
+    model: 'gpt-4o',
     messages: [{ role: 'user', content: prompt }],
+    max_tokens: 1024,
+    response_format: { type: 'json_object' },
   })
 
-  const content = response.content[0]
-  if (content.type !== 'text') {
-    throw new Error('Unexpected response type')
+  const content = response.choices[0]?.message?.content
+  if (!content) {
+    throw new Error('No response from OpenAI')
   }
 
   try {
-    return JSON.parse(content.text) as MonthlyInsight
+    return JSON.parse(content) as MonthlyInsight
   } catch {
     // Fallback if JSON parsing fails
     return {
