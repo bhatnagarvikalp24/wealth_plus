@@ -7,8 +7,10 @@ function getClient(): OpenAI {
   if (!openaiClient) {
     const apiKey = process.env.OPENAI_API_KEY
     if (!apiKey) {
+      console.error('OPENAI_API_KEY not found in environment variables')
       throw new Error('OPENAI_API_KEY is not configured')
     }
+    console.log('OpenAI client initialized successfully')
     openaiClient = new OpenAI({ apiKey })
   }
   return openaiClient

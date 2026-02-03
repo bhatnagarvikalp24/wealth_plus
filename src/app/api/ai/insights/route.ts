@@ -144,8 +144,7 @@ export async function GET(request: NextRequest) {
         topExpenseCategory: 'N/A',
         trend: 'stable',
       },
-      error: errorMessage.includes('API_KEY') ? 'OpenAI API key not configured' : 'AI service unavailable',
-      debug: process.env.NODE_ENV === 'development' ? errorMessage : undefined,
+      error: errorMessage.includes('API_KEY') ? 'OpenAI API key not configured' : errorMessage,
     })
   }
 }
