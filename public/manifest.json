@@ -43,28 +43,28 @@
   "screenshots": [
     {
       "src": "/screenshots/dashboard.png",
-      "sizes": "1080x1920",
+      "sizes": "2206x3780",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Dashboard - View your financial overview"
     },
     {
       "src": "/screenshots/income.png",
-      "sizes": "1080x1920",
+      "sizes": "2160x3840",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Income - Track all your income sources"
     },
     {
       "src": "/screenshots/expenses.png",
-      "sizes": "1080x1920",
+      "sizes": "2160x3840",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Expenses - Monitor your spending"
     },
     {
       "src": "/screenshots/savings.png",
-      "sizes": "1080x1920",
+      "sizes": "2160x3840",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Savings - Track your investments"
