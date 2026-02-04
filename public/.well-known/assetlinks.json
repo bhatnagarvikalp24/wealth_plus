@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.thefinlog.app",
+    "sha256_cert_fingerprints": [
+      "3B:E8:81:CE:B1:2C:FB:5F:7E:45:77:42:92:3C:52:7D:DD:72:C3:C6:F3:76:1F:13:8F:50:30:7E:B0:94:45:CA"
+    ]
+  }
+}]
